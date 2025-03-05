@@ -7,6 +7,8 @@ class loginTextField extends StatelessWidget {
    final TextEditingController controller;
   final  String? Function(String?)? validator;
    final Color color;
+  
+   
 
   const loginTextField({super.key, required this.hintText, required this.icon, required this.controller,required this.validator,required this.color});
 
@@ -20,6 +22,7 @@ class loginTextField extends StatelessWidget {
         fillColor: color,
         filled: true,
         prefixIcon: Icon(icon, color: appColor),
+       
         hintText: hintText,
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),

@@ -5,8 +5,9 @@ class Profiletextform extends StatelessWidget {
   final String hint;
   final IconData icon;
   final TextEditingController controller;
+  final  String? Function(String?)? validator;
 
-  const Profiletextform({super.key, required this.hint, required this.icon, required this.controller});
+  const Profiletextform({super.key, required this.hint, required this.icon, required this.controller,required this.validator});
 
   @override
   Widget build(BuildContext context) {
@@ -35,6 +36,7 @@ class Profiletextform extends StatelessWidget {
               borderRadius: BorderRadius.circular(10),
               borderSide: const BorderSide(color: Colors.white)),
         ),
+        validator: validator,
       ),
     );
   }

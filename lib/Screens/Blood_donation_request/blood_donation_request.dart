@@ -1,8 +1,12 @@
+import 'package:blood_bank_application/API/BloodRequestAPI/bloodrequestprovider.dart';
 import 'package:blood_bank_application/Colors/colors.dart';
+import 'package:blood_bank_application/DashBoard/widgets/oraganizationcard.dart';
 import 'package:blood_bank_application/Screens/Blood_donation_request/widgets/blood_donation_rquest_card.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class BloodDonationRequestPage extends StatefulWidget {
+  static const routname='blood_request_screen';
   const BloodDonationRequestPage({super.key});
 
   @override
@@ -10,9 +14,15 @@ class BloodDonationRequestPage extends StatefulWidget {
 }
 
 class _BloodDonationRequestPageState extends State<BloodDonationRequestPage> {
+  @override 
+  void initState(){
+    Provider.of<Bloodrequestprovider>(context,listen: false).getAllBloodRequestData(context: context);
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     Size size=MediaQuery.of(context).size;
+    final bloodrequest=Provider.of<Bloodrequestprovider>(context);
     return Scaffold(
      
          appBar: AppBar(
@@ -32,10 +42,44 @@ class _BloodDonationRequestPageState extends State<BloodDonationRequestPage> {
               Text('Blood Donation Requests',style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold),),
               SizedBox(height: size.height*0.02),
               Expanded(
-                child: ListView.builder(itemBuilder: (context, index) {
-                  return AllEventWidget();
-                },),
-              ),
+                child: bloodrequest.loadingSpinner
+                        ? Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Center(child: const Text("Loading")),
+                              CircularProgressIndicator(
+                                color:appColor,
+                              ),
+                              const SizedBox(
+                                width: 10,
+                              ),
+                           
+                            ],
+                          )
+                        : bloodrequest.bloodrequest.isEmpty
+                            ? Center(
+                                child: Text(
+                                'No Blood Requests...',
+                                style: TextStyle(color:appColor),
+                              ))
+                            : SizedBox(
+                                height: size.height * 0.05,
+                                child: ListView.builder(
+                                  itemCount: bloodrequest.bloodrequest.length,
+                                  itemBuilder: (context, intex) {
+                                    return BloodDonationRquestCard(
+                                      id: bloodrequest.bloodrequest[intex].id,
+                                      patientName: bloodrequest.bloodrequest[intex].patientName,
+                                      contactno: bloodrequest.bloodrequest[intex].bystanderContactNo,
+                                      bloodtype: bloodrequest.bloodrequest[intex].bloodType,
+                                      bloodUnitsRequired:bloodrequest.bloodrequest[intex].bloodUnitsRequired,
+                                      date: bloodrequest.bloodrequest[intex].requestedDate,
+                                   
+                                     
+                                    );
+                                  },
+                                ),
+              ),)
             ], 
           ),
         ),

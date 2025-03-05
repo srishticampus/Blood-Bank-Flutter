@@ -40,11 +40,11 @@ class _Registerscreen2State extends State<Registerscreen2> {
 
     Map<String, String> body = {
        
-      'name': widget.name, 
-      'dob': widget.dob,
+      'full_name': widget.name, 
+      'date_of_birth': widget.dob,
       'gender':widget.gender,
       'blood_group':widget.bloodgroup,
-      'contact_no':widget.phone,
+      'contact_number':widget.phone,
       'email':widget.email,
       'city':widget.city,
       'zip_code':widget.pincode,

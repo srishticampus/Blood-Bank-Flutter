@@ -1,0 +1,2 @@
+D:/Blood bank Application/blood_bank_application/android/app/.cxx/Debug/373z82l4/x86/CMakeFiles/edit_cache.dir
+D:/Blood bank Application/blood_bank_application/android/app/.cxx/Debug/373z82l4/x86/CMakeFiles/rebuild_cache.dir

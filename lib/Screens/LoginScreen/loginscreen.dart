@@ -29,6 +29,8 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  bool isloading =false;
+  bool _passwordVisible = false;
     void showToast(BuildContext context, String title, String description,
       ToastificationType type) {
     toastification.show(
@@ -191,6 +193,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   loginTextField(
                   hintText: 'bloodbank@gmail.com',
                   icon:  CupertinoIcons.mail,
+                 
                    controller:  emailController,
                   validator:   (value) {
                       if (emailController.text.isEmpty) {
@@ -203,30 +206,54 @@ class _LoginScreenState extends State<LoginScreen> {
                   SizedBox(height: size.height * 0.05),
 
                   // Password Field
-                  loginTextField(
-                   hintText:'Password (8+ Characters)',
-                   icon: CupertinoIcons.lock,
-                  controller:passwordController,
-                   validator: (value) {
-                      if (passwordController.text.isEmpty) {
-                        return 'Please enter your password';
-                      } 
-                      return null;
-                    },
-                  color:   Colors.white.withOpacity(0.6),
-                  ),
+                TextFormField(
+      style: TextStyle(fontSize: 13),
+      controller: passwordController,
+      obscureText: _passwordVisible,
+      decoration: InputDecoration(
+        
+        fillColor:  Colors.white.withOpacity(0.6),
+        filled: true,
+        prefixIcon: Icon(CupertinoIcons.lock, color: appColor),
+        suffixIcon: IconButton(
+          icon: Icon(
+            _passwordVisible ? Icons.visibility : Icons.visibility_off, 
+            color: appColor,
+          ),
+          onPressed: () {
+            setState(() {
+              _passwordVisible = !_passwordVisible; 
+            });
+          },
+        ),
+      
+       
+        hintText: 'Password',
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: const BorderSide(color: Colors.grey),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: appColor),
+          borderRadius: BorderRadius.circular(10),
+        ),
+        hintStyle: const TextStyle(fontSize: 13, color: Colors.grey),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: const BorderSide(color: Colors.white),
+        ),
+      ),
+     
+    ),
                   SizedBox(height: size.height * 0.05),
 
                   // Login Button
-                  LoginButton(
+                 isloading?CircularProgressIndicator(color: appColor): LoginButton(
                     title: 'Login',
                     onTap: ()  {
-                      loginButton();
-                      // if (_formKey.currentState!.validate()) {
-                       
-
-                      //  loginBloodbank(emailController.text.toString(),passwordController.text.toString());
-                      // }
+                  
+                     loginButton();
+                     
                     },
                   ),
                   SizedBox(height: size.height * 0.02),

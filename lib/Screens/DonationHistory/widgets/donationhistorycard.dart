@@ -12,46 +12,57 @@ class Donationhistorycard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-  
+  Size size=MediaQuery.of(context).size;
     return Padding(
-      padding: const EdgeInsets.all(10.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-       
-          
-          Card(
-            shape:RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10)),side: BorderSide(color: appColor,width: 3)),
-            
-            elevation: 2,
-           // margin: const EdgeInsets.all(26),
-            child: Padding(
-              padding: const EdgeInsets.all(15.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-              ListTile(
-                  leading:
-                  CircleAvatar(radius: 25,backgroundColor:appColor,
-                  backgroundImage: AssetImage('assets/newblood.png',),
-                  
-                  ),
-                  title: Text('Hospital Name : PRS Hospital',style: TextStyle(fontWeight: FontWeight.bold),),
-                  subtitle: Text('Blood Group : A+',style: TextStyle(fontWeight: FontWeight.bold),),
-                  
-                
-                 
-                        ),
-                      Text('No.of Units Taken : 10 Units',),
-                        Text('Eligibility : 24 Years',),
-                          Text('Last Donation Date : 12-04-2024',),
-                           
-         
-                ],
-              ),
+      padding: const EdgeInsets.all(15.0),
+      child: Card(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+        elevation: 5,
+       child: Padding(
+         padding: const EdgeInsets.all(15.0),
+         child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            CircleAvatar(
+              backgroundColor: const Color.fromARGB(255, 135, 101, 99),
+              radius: 25,
+              child: Text('A+',style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
             ),
-          ),
-        ],
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+           
+                Text('David Hospital'),
+                SizedBox(height: 5),
+                 Row(
+                   children: [
+                     Icon(Icons.person_outline,size: 15,),
+                     SizedBox(width: 5),
+                     Text('Eligibility : 20Years',style: TextStyle(fontSize: 12),),
+                   ],
+                 ),  SizedBox(height: 5),
+                  Row(
+                    children: [
+                       Icon(Icons.calendar_month_outlined,size: 15,),
+                          SizedBox(width: 5),
+                      Text('12-7-2000',style: TextStyle(fontSize: 12),),
+                    ],
+                  )
+              ],
+            ),
+            Card(
+              color: Colors.grey[200],
+            
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text('10 Units',style: TextStyle(fontSize: 12),),
+              ),
+            )
+          ],
+         ),
+       ),
+        
+        
       ),
     );
   }

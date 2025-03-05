@@ -39,9 +39,9 @@ class MyCustomAlertDialog {
             context: context,
             builder: (context) {
               return AlertDialog(
-                backgroundColor: appColor,
-                  title: Text(title,style: TextStyle(color: Colors.white,fontSize: 16),),
-                  content: Text(subtitle,style: TextStyle(color: Colors.white,fontSize: 13),),
+                backgroundColor: Colors.grey[300]
+,                  title: Text(title,style: TextStyle(color: Colors.black,fontSize: 16),),
+                  content: Text(subtitle,style: TextStyle(color: Colors.black,fontSize: 13),),
                   actions: <Widget>[
                     if (button == true)
                       ElevatedButton(
@@ -49,8 +49,8 @@ class MyCustomAlertDialog {
                         onPressed: () => onTapCancelButt!(),
                       ),
                     ElevatedButton(
-                      style: ElevatedButton.styleFrom(backgroundColor: Colors.white,shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10))),
-                      child:  Text('Ok',style: TextStyle(color: appColor,fontWeight: FontWeight.bold),),
+                      style: ElevatedButton.styleFrom(backgroundColor: appColor,shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10))),
+                      child:  Text('Ok',style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
                       onPressed: () => onTapOkButt(),
                     ),
                   ]);

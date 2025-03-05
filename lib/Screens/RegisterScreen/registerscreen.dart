@@ -88,46 +88,87 @@ class _RegisterscreenState extends State<Registerscreen> {
   //   });
   // }
 
-  Future<void> registerBloodbank(
-        String? imageBase64,
-      String name,
-      String dob,
-      String gender,
-      String bloodgroup,
-      String phone,
-      String email,
-      String city,
-      String pincode,
-      String password,
-      String helath,
-      String weight) async {
-    const url =
-        'http://campus.sicsglobal.co.in/Project/Blood_Bank/phpfiles/api/donor_reg.php';
+  // Future<void> registerBloodbank(
+  //     File? imageFile,
+  //     String name,
+  //     String dob,
+  //     String gender,
+  //     String bloodgroup,
+  //     String phone,
+  //     String email,
+  //     String city,
+  //     String pincode,
+  //     String password,
+  //     String helath,
+  //     String weight) async {
+  //   const url =
+  //       'http://campus.sicsglobal.co.in/Project/Blood_Bank/phpfiles/api/donor_reg.php';
 
-    Map<String, String> body = {
-      'avatar':imageBase64 ??'',
+  //   Map<String, String> body = {
+  //     'avatar':imageBase64 ??'',
+  //     'name': name,
+  //     'dob': dob,
+  //     'gender': gender,
+  //     'blood_group': bloodgroup,
+  //     'contact_no': phone,
+  //     'email': email,
+  //     'city': city,
+  //     'zip_code': pincode,
+  //     'password': password,
+  //     'health_status': helath,
+  //     'weight': weight
+  //   };
+
+  //   try {
+  //     final response = await https.mu(
+  //       Uri.parse(url),
+  //       body: body,
+  //     );
+  //     var jsonData = json.decode(response.body);
+  Future<void> registerBloodbank(
+    File? imageFile,
+    String name,
+    String dob,
+    String gender,
+    String bloodgroup,
+    String phone,
+    String email,
+    String city,
+    String pincode,
+    String password,
+    String health,
+    String weight) async {
+  const url = 'http://campus.sicsglobal.co.in/Project/Blood_Bank/phpfiles/api/donor_reg.php';
+
+  try {
+    var request = https.MultipartRequest('POST', Uri.parse(url));
+
+    // Attach the image file if selected
+    if (imageFile != null) {
+      request.files.add(await https.MultipartFile.fromPath('avatar', imageFile.path));
+    }
+
+    // Add other form fields
+    request.fields.addAll({
       'name': name,
-      'date_of_birth': dob,
+      'dob': dob,
       'gender': gender,
       'blood_group': bloodgroup,
-      'contact_number': phone,
+      'contact_no': phone,
       'email': email,
       'city': city,
       'zip_code': pincode,
       'password': password,
-      'health_status': helath,
-      'weight': weight
-    };
+      'health_status': health,
+      'weight': weight,
+    });
 
-    try {
-      final response = await https.post(
-        Uri.parse(url),
-        body: body,
-      );
-      var jsonData = json.decode(response.body);
+    var response = await request.send();
+    var responseBody = await response.stream.bytesToString();
+    var jsonData = json.decode(responseBody);
 
       if (response.statusCode == 200) {
-        if (jsonData['success'] == true) {
+        if (jsonData['status'] == true) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               backgroundColor: appColor,
@@ -141,12 +182,12 @@ class _RegisterscreenState extends State<Registerscreen> {
           );
           Navigator.push(context,
               MaterialPageRoute(builder: (context) => const LoginScreen()));
-          print(body);
-          print("Response body${response.body}");
-          print(body);
-          print("Response body${response.body}");
+          // print(body);
+          // print("Response body${response.body}");
+          // print(body);
+          // print("Response body${response.body}");
           print('Registration successful');
-        } else if (jsonData['success'] == false) {
+        } else if (jsonData['status'] == false) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               backgroundColor: appColor,
@@ -179,7 +220,7 @@ class _RegisterscreenState extends State<Registerscreen> {
             Navigator.of(context).pop();
           });}
 
-  else  if (fullNamecontroller.text.trim().isEmpty) {
+  else if (fullNamecontroller.text.trim().isEmpty) {
       MyCustomAlertDialog().showCustomAlertdialog(
           context: context,
           title: 'Note',
@@ -269,7 +310,7 @@ class _RegisterscreenState extends State<Registerscreen> {
           });
     } else {
       registerBloodbank(
-          base64Image,
+         File(file!.path),
           fullNamecontroller.text,
           dateController.text,
           selectedGender.toString(),

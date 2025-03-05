@@ -1,9 +1,13 @@
+import 'dart:io';
+
 import 'package:blood_bank_application/Colors/colors.dart';
+import 'package:blood_bank_application/DashBoard/dashboardscreen.dart';
 import 'package:blood_bank_application/Screens/Profile/API/userprovider.dart';
 import 'package:blood_bank_application/Screens/Profile/profilescreen.dart';
 import 'package:blood_bank_application/Screens/Profile/widgets/profiletextform.dart';
 import 'package:blood_bank_application/Screens/Images/images.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart'as http;
 
@@ -22,16 +26,55 @@ class _EditprofilescreenState extends State<Editprofilescreen> {
   TextEditingController emailcontroller=TextEditingController();
   TextEditingController citycontroller=TextEditingController();
   TextEditingController pincodecontroller=TextEditingController();
-  @override
-  void initState(){
-    Provider.of<UserProvider>(context,listen: false).getUserData(context: context);
-    super.initState();
+  final _formKey = GlobalKey<FormState>();
+   File? _image;
+  final ImagePicker _picker = ImagePicker();
+
+  /// Function to Pick Image from Gallery or Camera
+  Future<void> _pickImage(ImageSource source) async {
+    final pickedFile = await _picker.pickImage(source: source);
+
+    if (pickedFile != null) {
+      setState(() {
+        _image = File(pickedFile.path);
+      });
+    }
   }
+
+  /// Bottom Sheet for Choosing Image Source
+  void _showImagePicker() {
+    showModalBottomSheet(
+        context: context,
+        builder: (context) {
+          return Wrap(
+            children: [
+              ListTile(
+                  leading: const Icon(Icons.photo_library),
+                  title: const Text("Pick from Gallery"),
+                  onTap: () {
+                    _pickImage(ImageSource.gallery);
+                    Navigator.pop(context);
+                  }),
+              ListTile(
+                  leading: const Icon(Icons.camera_alt),
+                  title: const Text("Take a Photo"),
+                  onTap: () {
+                    _pickImage(ImageSource.camera);
+                    Navigator.pop(context);
+                  }),
+            ],
+          );
+        });
+  }
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         iconTheme: IconThemeData(color: Colors.white),
+        leading: IconButton(onPressed: (){
+          Navigator.push(context,MaterialPageRoute(builder: (context)=>const Dashboardscreen()));
+        }, icon: Icon(Icons.arrow_back,color: Colors.white)),
         backgroundColor: appColor,
         title: Text(
           'Edit Profile',
@@ -42,55 +85,121 @@ class _EditprofilescreenState extends State<Editprofilescreen> {
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(15.0),
-          child: Column(
-            children: [
-              Stack(
-                children: [
-                  CircleAvatar(
-                    backgroundImage: AssetImage(donarImage),
-                    radius: 50.0,
-                  ),
-                  Positioned(
-                      right: 5,
-                      bottom: 0,
-                      child: InkWell(
-                        onTap: () {},
-                        child: Container(
-                            child: const Icon(
-                              Icons.camera_alt_outlined,
-                              color: Colors.black,
-                              size: 20,
-                            ),
-                            padding: const EdgeInsets.all(7.5),
-                            decoration: BoxDecoration(
-                                border:
-                                    Border.all(width: 1, color: Colors.white),
-                                borderRadius: BorderRadius.circular(90.0),
-                                color: Colors.grey[200])),
-                      )),
-                ],
-              ),
-              Profiletextform(hint: 'Full Name', icon: Icons.person_outline,controller:fullnamecontroller),
-              Profiletextform(
-                  hint: 'Date of Birth', icon: Icons.calendar_today_outlined,controller: datecontroller,),
-              Profiletextform(hint: 'Gender', icon: Icons.male_outlined,controller: gendercontroller,),
-              Profiletextform(
-                  hint: 'Mobile Number', icon: Icons.phone_android_outlined,controller: mobilenumberrcontroller,),
-              Profiletextform(hint: 'Email', icon: Icons.email_outlined,controller: emailcontroller,),
-              Profiletextform(hint: 'City', icon: Icons.location_city_outlined,controller: citycontroller,),
-              Profiletextform(
-                  hint: 'Pincode', icon: Icons.location_on_outlined,controller: pincodecontroller),
-              ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                      backgroundColor: appColor,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(6))),
-                  onPressed: () {},
-                  child: Text(
-                    'Save',
-                    style: TextStyle(color: Colors.white),
-                  ))
-            ],
+          child: Form(
+            key: _formKey,
+            child: Column(
+              children: [
+                Stack(
+                  children: [
+                    CircleAvatar(
+                      backgroundImage: _image != null ? FileImage(_image!) : const AssetImage(donarImage),
+                      radius: 50.0,
+                    ),
+                    Positioned(
+                        right: 5,
+                        bottom: 0,
+                        child: InkWell(
+                          onTap: () {
+                            _showImagePicker();
+                          },
+                          child: Container(
+                              child: const Icon(
+                                Icons.camera_alt_outlined,
+                                color: Colors.black,
+                                size: 20,
+                              ),
+                              padding: const EdgeInsets.all(7.5),
+                              decoration: BoxDecoration(
+                                  border:
+                                      Border.all(width: 1, color: Colors.white),
+                                  borderRadius: BorderRadius.circular(90.0),
+                                  color: Colors.grey[200])),
+                        )),
+                  ],
+                ),
+                Profiletextform(hint: 'Full Name', icon: Icons.person_outline,controller:fullnamecontroller,validator: (value){
+                  if(fullnamecontroller.text.isEmpty){
+                    return 'Edit the name';
+                  }
+                  else{
+                    return null;
+                  }
+                },),
+                Profiletextform(
+                    hint: 'Date of Birth', icon: Icons.calendar_today_outlined,controller: datecontroller,validator:(value){
+                      if(datecontroller.text.isEmpty){
+                        return 'Edit the date';
+                      }
+                      else{
+                        return null;
+                      }
+                    },),
+                Profiletextform(hint: 'Gender', icon: Icons.male_outlined,controller: gendercontroller,validator: (value){
+                  if(gendercontroller.text.isEmpty){
+                    return 'Edit the gender';
+                  }
+                  else{
+                    return null;
+                  }
+                },),
+                Profiletextform(
+                    hint: 'Mobile Number', icon: Icons.phone_android_outlined,controller: mobilenumberrcontroller,
+                    validator: (value){
+                      if(mobilenumberrcontroller.text.isEmpty){
+                        return 'Edit the mobile number';
+            
+                      }
+                      else{
+                        return null;
+                      }
+                    },
+                    ),
+                Profiletextform(hint: 'Email', icon: Icons.email_outlined,controller: emailcontroller,validator: (value){
+                  if(emailcontroller.text.isEmpty){
+                    return 'Edit the email';
+                  }
+                  else{
+                    return null;
+                  }
+                },),
+                Profiletextform(hint: 'City', icon: Icons.location_city_outlined,controller: citycontroller,
+                validator: (value){
+                  if(citycontroller.text.isEmpty){
+                    return 'Edit the city';
+                  }
+                  else{
+                    return null;
+                  }
+                },
+                ),
+                Profiletextform(
+                    hint: 'Pincode', icon: Icons.location_on_outlined,controller: pincodecontroller,
+                     validator: (value){
+                      if(pincodecontroller.text.isEmpty){
+                        return 'Edit the pincode';
+                      }
+                      else{
+                        return null;
+                      }
+                     }, 
+                    ),
+                ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: appColor,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(6))),
+                    onPressed: () {
+                      if(_formKey.currentState!.validate()){
+                       updateProfileApi();
+                      }
+                     
+                    },
+                    child: Text(
+                      'Save',
+                      style: TextStyle(color: Colors.white),
+                    ))
+              ],
+            ),
           ),
         ),
       ),
@@ -109,38 +218,39 @@ class _EditprofilescreenState extends State<Editprofilescreen> {
           'http://campus.sicsglobal.co.in/Project/Blood_Bank/phpfiles/api/edit_profile.php');
       request.fields.addAll({
         'user_id': user.currentUserId ?? "1",
-        'email': emailcontroller.text.trim(),
-        'full_name': fullnamecontroller.text.trim(),
-        'date_of_birth': datecontroller.text.trim(),
+        'name': fullnamecontroller.text.trim(),
+        'dob': datecontroller.text,
         'gender': gendercontroller.text.trim(),
         'blood_group': 'O+',
         'weight': '70',
-        'contact_number': mobilenumberrcontroller.text.trim(),
-        'city': citycontroller.text.trim(),
+        'contact_no': mobilenumberrcontroller.text.trim(),
+        'email': emailcontroller.text.trim(),
+        'city':citycontroller.text.trim(),
         'zip_code':pincodecontroller.text.trim(),
         'health_status':'None'
        
       });
-    //     if (image != null) {
-    //   request.files.add(await http.MultipartFile.fromPath('photo', image!.path));
-    // }
+        if (_image != null) {
+        request.files.add(await http.MultipartFile.fromPath('avatar', _image!.path));
+      }
       http.StreamedResponse response = await request.send();
 
       print(await response.stream.bytesToString());
-   //  print( 
-        // 'email: ${emailcontroller.text.trim()}',
-        // 'full_name: ${fullnamecontroller.text.trim()}',
-        // 'date_of_birth': datecontroller.text.trim(),
-        // 'gender': gendercontroller.text.trim(),
-        // 'blood_group': 'O+',
-        // 'weight': '70',
-        // 'contact_number': mobilenumberrcontroller.text.trim(),
-        // 'city': citycontroller.text.trim(),
-        // 'zip_code':pincodecontroller.text.trim(),
-        // 'health_status':'None')
+ print(""" 'user_id': ${user.currentUserId??'1'},
+        'name': ${fullnamecontroller.text.trim()},
+        'dob': ${datecontroller.text.trim},
+        'gender': ${gendercontroller.text.trim()},
+        'blood_group': 'O+',
+        'weight':'70',
+        'contact_no': ${mobilenumberrcontroller.text.trim()},
+        'email':${emailcontroller.text.trim()},
+        'city'z;${citycontroller.text.trim()},
+        'zip_code':${pincodecontroller.text.trim()},
+        'health_status':'None'
+        """);
       if (response.statusCode == 200) {
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                  backgroundColor:Color.fromARGB(255, 31, 82, 32),
+                                  backgroundColor:appColor,
                                   content: const Text("Profile Updated successfully...!",style: TextStyle(color:Colors.white,fontWeight: FontWeight.bold),)));
         Navigator.push(
             context,

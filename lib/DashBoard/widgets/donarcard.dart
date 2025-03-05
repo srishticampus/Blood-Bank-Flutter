@@ -1,6 +1,6 @@
 import 'package:blood_bank_application/Colors/colors.dart';
 import 'package:blood_bank_application/Screens/Images/images.dart';
-import 'package:blood_bank_application/Screens/Profile/profilescreen.dart';
+
 import 'package:flutter/material.dart';
 
 class DonarCard extends StatefulWidget {

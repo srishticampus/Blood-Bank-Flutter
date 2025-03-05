@@ -35,6 +35,7 @@ void initState() {
           children: [
             SizedBox(height: 50),
             Center(child: Image.asset(applogo,scale: 3)),
+              SizedBox(height: 50),
           ],
         ),
       )

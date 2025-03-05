@@ -1,8 +1,10 @@
 import 'package:blood_bank_application/Colors/colors.dart';
 import 'package:blood_bank_application/Screens/Images/drawericon.dart';
 import 'package:blood_bank_application/Screens/Images/images.dart';
+import 'package:blood_bank_application/Screens/Profile/API/userprovider.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 
 class DrawerMenu extends StatefulWidget {
   const DrawerMenu({super.key});
@@ -12,6 +14,11 @@ class DrawerMenu extends StatefulWidget {
 }
 
 class _DrawerMenuState extends State<DrawerMenu> {
+  @override
+  void initState(){
+    Provider.of<UserProvider>(context,listen: false).getUserData(context: context);
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -28,22 +35,30 @@ class _DrawerMenuState extends State<DrawerMenu> {
                     // gradient: LinearGradient(colors: [Colors.grey, appColor])
 
                     ),
-                accountName: const Text(
-                  'Vishal V S',
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontFamily: 'Monsterrat'),
-                ),
-                currentAccountPicture: CircleAvatar(
-                  radius: 50,
-                  backgroundImage: AssetImage(profileImage),
-                ),
-                accountEmail: Text(
-                  'User_2532626525635',
-                  style: TextStyle(
-                      color: Colors.white, fontWeight: FontWeight.w300),
-                )),
+                accountName: Consumer<UserProvider>(builder: (context, value, child) {
+                  String username = "";
+                  for (var i = 0; i < value.users.length; i++) {
+                    username = value.users[i].fullName;
+                   
+                  }
+                  return  Text(username,style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold,fontSize: 16),);
+                }),
+                currentAccountPicture: Consumer<UserProvider>(builder: (context, value, child) {
+                  String username = "";
+                  for (var i = 0; i < value.users.length; i++) {
+                    username = value.users[i].avatar;
+                   
+                  }
+                  return CircleAvatar(backgroundImage: NetworkImage(username),);
+                }),
+                accountEmail:Consumer<UserProvider>(builder: (context, value, child) {
+                  String username = "";
+                  for (var i = 0; i < value.users.length; i++) {
+                    username = value.users[i].email;
+                   
+                  }
+                  return  Text(username,style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold,fontSize: 12),);
+                }),),
             menuList(totaldonaricon, 'Total Available Donars:23'),
             menuList(totaldonaricon, 'Total Successful Donations:50'),
             menuList(dprofileicon, 'Profile'),
