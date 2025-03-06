@@ -42,21 +42,21 @@ class _LoginScreenState extends State<LoginScreen> {
       autoCloseDuration: const Duration(seconds: 3),
       progressBarTheme: ProgressIndicatorThemeData(
         color: type == ToastificationType.success
-            ? appColor
+            ? Colors.white
             : type == ToastificationType.info
-                ? Colors.blue
+                ? Colors.white
                 : type == ToastificationType.warning
                     ? Colors.orange
-                    : appColor,
+                    : Colors.grey,
       ),
       showProgressBar: true,
       backgroundColor: type == ToastificationType.success
-          ? appColor
+          ? Colors.grey
           : type == ToastificationType.info
-              ? Colors.blue
+              ? Colors.red
               : type == ToastificationType.warning
                   ? Colors.orange
-                  : appColor,
+                  : Colors.grey,
       foregroundColor: Colors.white,
     );
   }
@@ -191,7 +191,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
                   // Email Field
                   loginTextField(
-                  hintText: 'bloodbank@gmail.com',
+                  hintText: 'E-Mail',
                   icon:  CupertinoIcons.mail,
                  
                    controller:  emailController,

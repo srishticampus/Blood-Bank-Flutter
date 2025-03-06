@@ -112,7 +112,7 @@ class _DashboardscreenState extends State<Dashboardscreen> {
                         Emergencycard(
                             icon: Icons.location_city_outlined,
                             value:
-                                'Organization Name : Blood Bank Organization'),
+                                'Organization Name : Blood Bank Limited'),
                         Emergencycard(
                             icon: Icons.person_pin_outlined,
                             value: 'Count of Members : 50'),

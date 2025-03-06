@@ -1,14 +1,16 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:blood_bank_application/Screens/Images/images.dart';
 import 'package:blood_bank_application/Screens/LoginScreen/dialoguebox/dialogie.dart';
 import 'package:blood_bank_application/Screens/LoginScreen/loginscreen.dart';
 import 'package:blood_bank_application/Screens/RegisterScreen/registerfarm.dart';
-import 'package:http/http.dart' as https;
 import 'package:flutter/material.dart';
+
+import 'package:http/http.dart' as https;
+
 import 'package:blood_bank_application/Colors/colors.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:toastification/toastification.dart';
 
 class Registerscreen extends StatefulWidget {
   const Registerscreen({super.key});
@@ -18,7 +20,7 @@ class Registerscreen extends StatefulWidget {
 }
 
 class _RegisterscreenState extends State<Registerscreen> {
-  TextEditingController fullNamecontroller = TextEditingController();
+  TextEditingController fullNamecontroller=TextEditingController();
   TextEditingController dateController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
   TextEditingController emailController = TextEditingController();
@@ -30,7 +32,35 @@ class _RegisterscreenState extends State<Registerscreen> {
   var selectedBloodGroup = '';
   var selecthealth = '';
   final _formKey = GlobalKey<FormState>();
-  List<String> genderList = ['Male', 'Female', 'Other'];
+  void showToast(BuildContext context, String title, String description,
+      ToastificationType type) {
+    toastification.show(
+      context: context,
+      type: type,
+      title: Text(title,style: TextStyle(fontWeight: FontWeight.bold),),
+      description: Text(description),
+      primaryColor: Colors.white,
+      autoCloseDuration: const Duration(seconds: 3),
+      progressBarTheme: ProgressIndicatorThemeData(
+        color: type == ToastificationType.success
+            ? appColor
+            : type == ToastificationType.info
+                ? Colors.blue
+                : type == ToastificationType.warning
+                    ? Colors.orange
+                    : Colors.grey,
+      ),
+      showProgressBar: true,
+      backgroundColor: type == ToastificationType.success
+          ? appColor
+          : type == ToastificationType.info
+              ? Colors.blue
+              : type == ToastificationType.warning
+                  ? Colors.orange
+                  : Colors.grey,
+      foregroundColor: Colors.white,
+    );
+  }
 
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -77,54 +107,7 @@ class _RegisterscreenState extends State<Registerscreen> {
       base64Image = base64Encode(imageBytes);
     }
   }
-  // bool loading = false;
-  // int value = -1;
-  // XFile? file;
-  // final ImagePicker _picker = ImagePicker();
-  // void takePhoto(ImageSource source) async {
-  //   final pickedFile = await _picker.pickImage(source: source);
-  //   setState(() {
-  //     file = pickedFile;
-  //   });
-  // }
 
-  // Future<void> registerBloodbank(
-  //     File? imageFile,
-  //     String name,
-  //     String dob,
-  //     String gender,
-  //     String bloodgroup,
-  //     String phone,
-  //     String email,
-  //     String city,
-  //     String pincode,
-  //     String password,
-  //     String helath,
-  //     String weight) async {
-  //   const url =
-  //       'http://campus.sicsglobal.co.in/Project/Blood_Bank/phpfiles/api/donor_reg.php';
-
-  //   Map<String, String> body = {
-  //     'avatar':imageBase64 ??'',
-  //     'name': name,
-  //     'dob': dob,
-  //     'gender': gender,
-  //     'blood_group': bloodgroup,
-  //     'contact_no': phone,
-  //     'email': email,
-  //     'city': city,
-  //     'zip_code': pincode,
-  //     'password': password,
-  //     'health_status': helath,
-  //     'weight': weight
-  //   };
-
-  //   try {
-  //     final response = await https.mu(
-  //       Uri.parse(url),
-  //       body: body,
-  //     );
-  //     var jsonData = json.decode(response.body);
   Future<void> registerBloodbank(
     File? imageFile,
     String name,
@@ -169,17 +152,8 @@ class _RegisterscreenState extends State<Registerscreen> {
 
       if (response.statusCode == 200) {
         if (jsonData['status'] == true) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              backgroundColor: appColor,
-              content: const Text(
-                'Registration Successful!',
-                style:
-                    TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-              ),
-              duration: const Duration(seconds: 4),
-            ),
-          );
+          showToast(context, 'Register', 'Registration Successful',
+                  ToastificationType.success);
           Navigator.push(context,
               MaterialPageRoute(builder: (context) => const LoginScreen()));
           // print(body);
@@ -188,17 +162,8 @@ class _RegisterscreenState extends State<Registerscreen> {
           // print("Response body${response.body}");
           print('Registration successful');
         } else if (jsonData['status'] == false) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              backgroundColor: appColor,
-              content: const Text(
-                'User Already Exists !',
-                style:
-                    TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-              ),
-              duration: const Duration(seconds: 4),
-            ),
-          );
+           showToast(context, 'Register', 'Not Registered this user',
+                  ToastificationType.success);
           print('Error: ${response.statusCode}');
         } else {
           print('Not working this api');
@@ -396,7 +361,7 @@ class _RegisterscreenState extends State<Registerscreen> {
                       registerFieldName(title: 'Date of Birth'),
                       SizedBox(height: size.height * 0.01),
                       registerTextField(
-                        hintText: 'Date of Birth',
+                        hintText: 'Date of Birth(should be between 18 to 65 )',
                         icon: Icons.calendar_month_outlined,
                         controller: dateController,
                         onTap: () {

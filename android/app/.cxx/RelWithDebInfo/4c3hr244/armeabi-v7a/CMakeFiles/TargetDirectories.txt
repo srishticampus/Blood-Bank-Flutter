@@ -1,0 +1,2 @@
+D:/Blood bank Application/blood_bank_application/android/app/.cxx/RelWithDebInfo/4c3hr244/armeabi-v7a/CMakeFiles/edit_cache.dir
+D:/Blood bank Application/blood_bank_application/android/app/.cxx/RelWithDebInfo/4c3hr244/armeabi-v7a/CMakeFiles/rebuild_cache.dir
