@@ -66,7 +66,37 @@ class _EditprofilescreenState extends State<Editprofilescreen> {
           );
         });
   }
-  
+  @override
+void initState() {
+  super.initState();
+  _loadUserData();
+}
+
+void _loadUserData() {
+  final user = Provider.of<UserProvider>(context, listen: false);
+
+  setState(() {
+    // fullnamecontroller.text = user.currentUserId ?? "Vishal";
+    // datecontroller.text = user.currentUserId ?? "12-2-2000";
+    // gendercontroller.text = user.currentUserId?? "Male";
+    // mobilenumberrcontroller.text = user.currentUserId ?? "8870120688";
+    // emailcontroller.text = user.currentUserId ?? "vishal@gmail.com";
+    // citycontroller.text = user.currentUserId ?? "Kerala";
+    // pincodecontroller.text = user.currentUserId?? "629161";
+       fullnamecontroller.text =  "Vishal";
+    datecontroller.text =  "12-2-2000";
+    gendercontroller.text ="Male";
+    mobilenumberrcontroller.text =  "8870120688";
+    emailcontroller.text =  "vishal@gmail.com";
+    citycontroller.text = "Kerala";
+    pincodecontroller.text =  "629161";
+
+    if (user.currentUserId != null && user.currentUserId!.isNotEmpty) {
+      _image = File(user.currentUserId!); // Load existing profile image
+    }
+  });
+}
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

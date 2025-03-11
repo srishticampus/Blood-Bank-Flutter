@@ -61,34 +61,74 @@ class _RegisterscreenState extends State<Registerscreen> {
       foregroundColor: Colors.white,
     );
   }
-
   Future<void> _selectDate(BuildContext context) async {
-    final DateTime? picked = await showDatePicker(
-      context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime(2000),
-      lastDate: DateTime(2101),
-      builder: (BuildContext context, Widget? child) {
-        return Theme(
-          data: ThemeData.light().copyWith(
-            colorScheme: ColorScheme.light(
-              primary: Colors.white,
-              onPrimary: appColor,
-              surface: appColor,
-              onSurface: Colors.white,
-            ),
+  final DateTime? picked = await showDatePicker(
+    
+    context: context,
+    initialDate: DateTime.now(),
+    firstDate: DateTime(1900), // Allowing valid past dates
+    lastDate: DateTime.now(), // Restricting future dates
+    builder: (BuildContext context, Widget? child) {
+      return Theme(
+        data: ThemeData.light().copyWith(
+          colorScheme: ColorScheme.light(
+            primary: Colors.white,
+            onPrimary: appColor,
+            surface: appColor,
+            onSurface: Colors.white,
           ),
-          child: child!,
-        );
-      },
-    );
+        ),
+        child: child!,
+      );
+    },
+  );
 
-    if (picked != null && picked != DateTime.now()) {
-      // Format the date and set it in the TextField
+  if (picked != null) {
+    if (picked.isAfter(DateTime.now())) {
+      // Show error if future date is selected
+      MyCustomAlertDialog().showCustomAlertdialog(
+        context: context,
+        title: 'Note',
+        subtitle: "Invalid date! Date of Birth cannot be in the future.",
+        onTapOkButt: () {
+          Navigator.of(context).pop();
+        },
+      );
+    } else {
+      // Format and set the valid date
       String formattedDate = "${picked.day}-${picked.month}-${picked.year}";
       dateController.text = formattedDate;
     }
   }
+}
+
+  // Future<void> _selectDate(BuildContext context) async {
+  //   final DateTime? picked = await showDatePicker(
+  //     context: context,
+  //     initialDate: DateTime.now(),
+  //     firstDate: DateTime(2000),
+  //     lastDate: DateTime(2101),
+  //     builder: (BuildContext context, Widget? child) {
+  //       return Theme(
+  //         data: ThemeData.light().copyWith(
+  //           colorScheme: ColorScheme.light(
+  //             primary: Colors.white,
+  //             onPrimary: appColor,
+  //             surface: appColor,
+  //             onSurface: Colors.white,
+  //           ),
+  //         ),
+  //         child: child!,
+  //       );
+  //     },
+  //   );
+
+  //   if (picked != null && picked != DateTime.now()) {
+  //     // Format the date and set it in the TextField
+  //     String formattedDate = "${picked.day}-${picked.month}-${picked.year}";
+  //     dateController.text = formattedDate;
+  //   }
+  // }
   
   XFile? file;
   String? base64Image;
@@ -97,6 +137,7 @@ class _RegisterscreenState extends State<Registerscreen> {
     final pickedFile = await _picker.pickImage(source: source);
 
     if (pickedFile != null) {
+       Navigator.pop(context);
       setState(() {
         file = pickedFile;
       });
@@ -175,6 +216,7 @@ class _RegisterscreenState extends State<Registerscreen> {
   }
 
   void registerButton() {
+      
 
     if (file == null) {
       MyCustomAlertDialog().showCustomAlertdialog(
@@ -185,11 +227,11 @@ class _RegisterscreenState extends State<Registerscreen> {
             Navigator.of(context).pop();
           });}
 
-  else if (fullNamecontroller.text.trim().isEmpty) {
+  else if (fullNamecontroller.text.trim().isEmpty||!RegExp(r'^[a-zA-Z\s]+$').hasMatch(fullNamecontroller.text.trim())) {
       MyCustomAlertDialog().showCustomAlertdialog(
           context: context,
           title: 'Note',
-          subtitle: "Please enter Full Name",
+         subtitle: "Please enter a valid Full Name (only letters allowed)",
           onTapOkButt: () {
             Navigator.of(context).pop();
           });
@@ -217,15 +259,20 @@ class _RegisterscreenState extends State<Registerscreen> {
           onTapOkButt: () {
             Navigator.of(context).pop();
           });
-    } else if (phoneController.text.trim().isEmpty) {
-      MyCustomAlertDialog().showCustomAlertdialog(
-          context: context,
-          title: 'Note',
-          subtitle: "Please enter Phone Number",
-          onTapOkButt: () {
-            Navigator.of(context).pop();
-          });
-    } else if (emailController.text.trim().isEmpty) {
+    } else if (phoneController.text.trim().isEmpty || 
+         !RegExp(r'^[1-9][0-9]{9}$').hasMatch(phoneController.text.trim())) {
+  MyCustomAlertDialog().showCustomAlertdialog(
+      context: context,
+      title: 'Note',
+      subtitle: "Invalid phone number! Please enter a valid 10-digit number that does not start with 0.",
+      onTapOkButt: () {
+        Navigator.of(context).pop();
+      });
+  return;
+}
+
+  
+    else if (emailController.text.trim().isEmpty) {
       MyCustomAlertDialog().showCustomAlertdialog(
           context: context,
           title: 'Note',
@@ -257,11 +304,11 @@ class _RegisterscreenState extends State<Registerscreen> {
           onTapOkButt: () {
             Navigator.of(context).pop();
           });
-    } else if (selecthealth.trim().isEmpty) {
+    } else if (selecthealth.trim().isEmpty|| selecthealth != "None") {
       MyCustomAlertDialog().showCustomAlertdialog(
           context: context,
           title: 'Note',
-          subtitle: "Please enter Health Status",
+          subtitle: "Donor with diseases are not allowed to register for donation",
           onTapOkButt: () {
             Navigator.of(context).pop();
           });
@@ -275,7 +322,7 @@ class _RegisterscreenState extends State<Registerscreen> {
           });
     } else {
       registerBloodbank(
-         File(file!.path),
+          File(file!.path),
           fullNamecontroller.text,
           dateController.text,
           selectedGender.toString(),

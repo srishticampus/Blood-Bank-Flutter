@@ -9,7 +9,6 @@ import 'package:blood_bank_application/Screens/LoginScreen/dialoguebox/dialogie.
 import 'package:blood_bank_application/Screens/LoginScreen/roundbutton.dart';
 import 'package:blood_bank_application/Screens/Profile/API/usermodel.dart';
 import 'package:blood_bank_application/Screens/Profile/API/userprovider.dart';
-
 import 'package:blood_bank_application/Screens/RegisterScreen/registerscreen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
