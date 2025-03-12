@@ -66,11 +66,11 @@ class _EditprofilescreenState extends State<Editprofilescreen> {
           );
         });
   }
-  @override
-void initState() {
-  super.initState();
-  _loadUserData();
-}
+//   @override
+// void initState() {
+//   super.initState();
+//   _loadUserData();
+// }
 
 void _loadUserData() {
   final user = Provider.of<UserProvider>(context, listen: false);
@@ -83,13 +83,13 @@ void _loadUserData() {
     // emailcontroller.text = user.currentUserId ?? "vishal@gmail.com";
     // citycontroller.text = user.currentUserId ?? "Kerala";
     // pincodecontroller.text = user.currentUserId?? "629161";
-       fullnamecontroller.text =  "Vishal";
-    datecontroller.text =  "12-2-2000";
-    gendercontroller.text ="Male";
-    mobilenumberrcontroller.text =  "8870120688";
-    emailcontroller.text =  "vishal@gmail.com";
-    citycontroller.text = "Kerala";
-    pincodecontroller.text =  "629161";
+    //    fullnamecontroller.text =  "Vishal";
+    // datecontroller.text =  "12-2-2000";
+    // gendercontroller.text ="Male";
+    // mobilenumberrcontroller.text =  "8870120688";
+    // emailcontroller.text =  "vishal@gmail.com";
+    // citycontroller.text = "Kerala";
+    // pincodecontroller.text =  "629161";
 
     if (user.currentUserId != null && user.currentUserId!.isNotEmpty) {
       _image = File(user.currentUserId!); // Load existing profile image
@@ -147,7 +147,7 @@ void _loadUserData() {
                         )),
                   ],
                 ),
-                Profiletextform(hint: 'Full Name', icon: Icons.person_outline,controller:fullnamecontroller,validator: (value){
+                Profiletextform(hint: 'Edit the Full Name', icon: Icons.person_outline,controller:fullnamecontroller,validator: (value){
                   if(fullnamecontroller.text.isEmpty){
                     return 'Edit the name';
                   }
@@ -156,7 +156,7 @@ void _loadUserData() {
                   }
                 },),
                 Profiletextform(
-                    hint: 'Date of Birth', icon: Icons.calendar_today_outlined,controller: datecontroller,validator:(value){
+                    hint: 'Edit the of Birth', icon: Icons.calendar_today_outlined,controller: datecontroller,validator:(value){
                       if(datecontroller.text.isEmpty){
                         return 'Edit the date';
                       }
@@ -164,7 +164,7 @@ void _loadUserData() {
                         return null;
                       }
                     },),
-                Profiletextform(hint: 'Gender', icon: Icons.male_outlined,controller: gendercontroller,validator: (value){
+                Profiletextform(hint: 'Edit the Gender', icon: Icons.male_outlined,controller: gendercontroller,validator: (value){
                   if(gendercontroller.text.isEmpty){
                     return 'Edit the gender';
                   }
@@ -173,7 +173,7 @@ void _loadUserData() {
                   }
                 },),
                 Profiletextform(
-                    hint: 'Mobile Number', icon: Icons.phone_android_outlined,controller: mobilenumberrcontroller,
+                    hint: 'Edit the Mobile Number', icon: Icons.phone_android_outlined,controller: mobilenumberrcontroller,
                     validator: (value){
                       if(mobilenumberrcontroller.text.isEmpty){
                         return 'Edit the mobile number';
@@ -184,7 +184,7 @@ void _loadUserData() {
                       }
                     },
                     ),
-                Profiletextform(hint: 'Email', icon: Icons.email_outlined,controller: emailcontroller,validator: (value){
+                Profiletextform(hint: 'Edit the Email', icon: Icons.email_outlined,controller: emailcontroller,validator: (value){
                   if(emailcontroller.text.isEmpty){
                     return 'Edit the email';
                   }
@@ -192,7 +192,7 @@ void _loadUserData() {
                     return null;
                   }
                 },),
-                Profiletextform(hint: 'City', icon: Icons.location_city_outlined,controller: citycontroller,
+                Profiletextform(hint: 'Edit the City', icon: Icons.location_city_outlined,controller: citycontroller,
                 validator: (value){
                   if(citycontroller.text.isEmpty){
                     return 'Edit the city';
@@ -203,7 +203,7 @@ void _loadUserData() {
                 },
                 ),
                 Profiletextform(
-                    hint: 'Pincode', icon: Icons.location_on_outlined,controller: pincodecontroller,
+                    hint: 'Edit the Pincode', icon: Icons.location_on_outlined,controller: pincodecontroller,
                      validator: (value){
                       if(pincodecontroller.text.isEmpty){
                         return 'Edit the pincode';
@@ -252,7 +252,7 @@ void _loadUserData() {
         'dob': datecontroller.text,
         'gender': gendercontroller.text.trim(),
         'blood_group': 'O+',
-        'weight': '70',
+        'weight': '50',
         'contact_no': mobilenumberrcontroller.text.trim(),
         'email': emailcontroller.text.trim(),
         'city':citycontroller.text.trim(),
@@ -271,7 +271,7 @@ void _loadUserData() {
         'dob': ${datecontroller.text.trim},
         'gender': ${gendercontroller.text.trim()},
         'blood_group': 'O+',
-        'weight':'70',
+        'weight':'50',
         'contact_no': ${mobilenumberrcontroller.text.trim()},
         'email':${emailcontroller.text.trim()},
         'city'z;${citycontroller.text.trim()},

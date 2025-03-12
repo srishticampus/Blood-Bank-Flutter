@@ -14,6 +14,7 @@ class Profiletextform extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10),
       child: TextFormField(
+        style: TextStyle(fontSize: 12),
         controller: controller,
         decoration: InputDecoration(
           fillColor: Colors.white.withOpacity(0.6),

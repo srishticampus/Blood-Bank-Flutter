@@ -216,7 +216,7 @@ class _RegisterscreenState extends State<Registerscreen> {
   }
 
   void registerButton() {
-      
+    
 
     if (file == null) {
       MyCustomAlertDialog().showCustomAlertdialog(
@@ -312,15 +312,19 @@ class _RegisterscreenState extends State<Registerscreen> {
           onTapOkButt: () {
             Navigator.of(context).pop();
           });
-    } else if (weightcontroller.text.trim().isEmpty) {
+    } else if (weightcontroller.text.trim().isEmpty||double.tryParse(weightcontroller.text.trim()) == null || double.parse(weightcontroller.text.trim()) < 50) {
       MyCustomAlertDialog().showCustomAlertdialog(
           context: context,
           title: 'Note',
-          subtitle: "Please enter Weight",
+          subtitle: "Weight must be a number and at least 50",
           onTapOkButt: () {
             Navigator.of(context).pop();
           });
-    } else {
+    } 
+   
+    
+    
+    else {
       registerBloodbank(
           File(file!.path),
           fullNamecontroller.text,

@@ -24,25 +24,19 @@ class _EmergencyRequestCardState extends State<EmergencyRequestCard> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            'Emergency Alert',
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
+                       
                           Divider(thickness: 1,color: Colors.black,),
                           Emergencycard(
-                              icon: Icons.person_outline,
+                              icon: Icons.person,
                               value: 'Patient Name : ${widget.patientName}'),
                           Emergencycard(
-                              icon: Icons.phone_android_outlined,
+                              icon: Icons.phone_android,
                               value: 'Contact No : ${widget.contactno}'),
                           Emergencycard(
-                              icon: Icons.bloodtype_outlined,
+                              icon: Icons.bloodtype,
                               value: 'Blood Required : ${widget.bloodrequired}'),
                           Emergencycard(
-                              icon: Icons.bloodtype_outlined,
+                              icon: Icons.bloodtype,
                               value: 'Units Required : ${widget.bloodUnitsRequired}'),
                         ],
                       ),

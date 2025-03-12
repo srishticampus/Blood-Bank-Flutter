@@ -1,4 +1,5 @@
 
+import 'package:blood_bank_application/Screens/Blood_donation_request/blood_donationdetailsscreen.dart';
 import 'package:flutter/material.dart';
 
 class BloodDonationRquestCard extends StatefulWidget {
@@ -24,7 +25,9 @@ class _BloodDonationRquestCardState extends State<BloodDonationRquestCard> {
     return Column(
       children: [
         GestureDetector(
-          onTap: () {},
+          onTap: () {
+            Navigator.push(context,MaterialPageRoute(builder: (context)=>BloodDonationdetailsscreen(id: widget.id)));
+          },
           child: Card(
             elevation: 4,
             shape:

@@ -1,4 +1,3 @@
-import 'package:animate_do/animate_do.dart';
 import 'package:blood_bank_application/API/EmergencyalertAPI/emergencyapi/Emergencyrequestprovider.dart';
 import 'package:blood_bank_application/Colors/colors.dart';
 import 'package:blood_bank_application/DashBoard/widgets/dashboradcard.dart';
@@ -48,9 +47,23 @@ class _DashboardscreenState extends State<Dashboardscreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                   Row(
+                     children: [
+                      Image.asset('assets/alarm.png',height: 28,width: 28,),
+                      SizedBox(width: 10),
+                       Text(
+                                'Emergency Alerts',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                     ],
+                   ),
+                          SizedBox(height: size.height*0.01),
 
                  SizedBox(
-                  height: size.height*0.25,
+                  height: size.height*0.22,
                    child: emergencyalert.loadingSpinner
                         ? Column(
                             mainAxisAlignment: MainAxisAlignment.center,

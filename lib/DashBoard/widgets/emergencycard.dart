@@ -1,3 +1,4 @@
+import 'package:blood_bank_application/Colors/colors.dart';
 import 'package:flutter/material.dart';
 
 class Emergencycard extends StatelessWidget {
@@ -12,7 +13,7 @@ class Emergencycard extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 4.0),
       child: Row(
         children: [
-          Icon(icon,size: 20,color: Colors.grey),
+          Icon(icon,size: 20,color: appColor),
           SizedBox(width: 10),
           Text(value,style: TextStyle(fontWeight: FontWeight.w500,fontSize: 13),),
          

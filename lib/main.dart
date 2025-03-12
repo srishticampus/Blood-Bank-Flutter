@@ -1,9 +1,6 @@
 
-import 'package:blood_bank_application/API/BloodRequestAPI/bloodrequestprovider.dart';
-import 'package:blood_bank_application/API/EmergencyalertAPI/emergencyapi/Emergencyrequestprovider.dart';
-import 'package:blood_bank_application/Screens/Blood_donation_request/blood_donation_request.dart';
-import 'package:blood_bank_application/Screens/Profile/API/userprovider.dart';
-import 'package:blood_bank_application/Screens/Profile/profilescreen.dart';
+import 'package:blood_bank_application/Helpers/providers.dart';
+import 'package:blood_bank_application/Helpers/routes.dart';
 import 'package:blood_bank_application/Screens/SpalshScreen/splashscreen.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -21,19 +18,12 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return 
      MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (context)=>UserProvider()),
-        ChangeNotifierProvider(create:(context)=>Emergencyrequestprovider()),
-        ChangeNotifierProvider(create: (context)=>Bloodrequestprovider())
-      ],
+      providers:multiprovider,
        child: MaterialApp(
           debugShowCheckedModeBanner: false,
           theme: ThemeData(textTheme: GoogleFonts.remTextTheme()),
           home:Splashscreen(),
-          routes: {
-            '/profilescreen':(context)=>Profilescreen(),
-            'blood_request_screen':(context)=>BloodDonationRequestPage()
-          },
+          routes:customRoutes, 
         ),
      );
     

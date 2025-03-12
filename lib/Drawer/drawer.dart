@@ -1,7 +1,10 @@
 import 'package:blood_bank_application/Colors/colors.dart';
 import 'package:blood_bank_application/Screens/Images/drawericon.dart';
 import 'package:blood_bank_application/Screens/Images/images.dart';
+import 'package:blood_bank_application/Screens/LoginScreen/loginscreen.dart';
 import 'package:blood_bank_application/Screens/Profile/API/userprovider.dart';
+import 'package:blood_bank_application/Screens/Profile/profilescreen.dart';
+import 'package:blood_bank_application/Screens/contactscreen.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -59,39 +62,113 @@ class _DrawerMenuState extends State<DrawerMenu> {
                   }
                   return  Text(username,style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold,fontSize: 12),);
                 }),),
-            menuList(totaldonaricon, 'Total Available Donars:23'),
-            menuList(totaldonaricon, 'Total Successful Donations:50'),
-            menuList(dprofileicon, 'Profile'),
-            menuList(bloodreqicon, 'Blood Requirement'),
-            menuList(bloodreqicon, 'Completed Requirement'),
-            menuList(aboutusicon, 'About us'),
-            menuList(contactusicon, 'Contact us'),
-            menuList(notificationicon, 'Notifications'),
-            menuList(blogouticon, 'Logout'),
+            menuList(totaldonaricon, 'Total Available Donars:23',(){}),
+            menuList(totaldonaricon, 'Total Successful Donations:50',(){}),
+            menuList(dprofileicon, 'Profile',(){
+              Navigator.push(context,MaterialPageRoute(builder: (context)=>Profilescreen()));
+            }),
+            menuList(bloodreqicon, 'Blood Requirement',(){}),
+            menuList(bloodreqicon, 'Completed Requirement',(){}),
+            menuList(aboutusicon, 'About us',(){}),
+            menuList(contactusicon, 'Contact us',(){
+              Navigator.push(context, MaterialPageRoute(builder: (context)=>const Contactscreen()));
+            }),
+            menuList(notificationicon, 'Notifications',(){}),
+            menuList(blogouticon, 'Logout',(){
+                 showDialog(
+              context: context,
+              builder: (context) {
+                return Dialog(
+                  elevation: 1,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15)),
+                  child: Container(
+                    width: 350,
+                    height: MediaQuery.of(context).size.height / 4,
+                    decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                            colors: [appColor,Colors.grey]),
+                        borderRadius: BorderRadius.circular(15.0),
+                        boxShadow: [
+                          BoxShadow(
+                              offset: const Offset(12, 26),
+                              blurRadius: 50,
+                              spreadRadius: 0,
+                              color: Colors.grey.withOpacity(.1)),
+                        ]),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        CircleAvatar(
+                      
+                          radius: 25,
+                         child: Image.asset('assets/logout.png',height: 25,width: 25,),
+                        ),
+                        const SizedBox(
+                          height: 15,
+                        ),
+                        Text("Logout",
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold)),
+                        const SizedBox(
+                          height: 3.5,
+                        ),
+                        Text("Are you sure you want to logout?",
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 12,
+                                fontWeight: FontWeight.w300)),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    TextButton(onPressed: (){
+
+                                      Navigator.push(context, MaterialPageRoute(builder: (context)=>const LoginScreen()));
+                                    }, child: Text('Yes',style: TextStyle(color: Colors.white),)),
+                                     TextButton(onPressed: (){
+                                      Navigator.pop(context);
+                                     }, child: Text('No',style: TextStyle(color: Colors.white)))
+                                  ],
+                                ),
+                        const SizedBox(
+                          height: 15,
+                        ),
+                      ],
+                    ),
+                  ),
+                  
+                );
+              });
+            }),
           ],
         ),
       ),
     );
   }
 
-  Widget menuList(String image, String title) {
+  Widget menuList(String image, String title,Function() onTap) {
     return ListTile(
-      leading: Container(
-          height: 40,
-          width: 40,
-          decoration: BoxDecoration(),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Center(
-                  child: Image.asset(
-                image,
-                height: 30,
-                width: 30,
-                color: Colors.black,
-              )),
-            ],
-          )),
+      leading: InkWell(
+        onTap: onTap,
+        child: Container(
+            height: 40,
+            width: 40,
+            decoration: BoxDecoration(),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Center(
+                    child: Image.asset(
+                  image,
+                  height: 30,
+                  width: 30,
+                  color: Colors.black,
+                )),
+              ],
+            )),
+      ),
       title: Text(
         title,
         style: const TextStyle(color: Colors.black, fontSize: 13),
