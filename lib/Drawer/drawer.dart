@@ -62,8 +62,6 @@ class _DrawerMenuState extends State<DrawerMenu> {
                   }
                   return  Text(username,style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold,fontSize: 12),);
                 }),),
-            menuList(totaldonaricon, 'Total Available Donars:23',(){}),
-            menuList(totaldonaricon, 'Total Successful Donations:50',(){}),
             menuList(dprofileicon, 'Profile',(){
               Navigator.push(context,MaterialPageRoute(builder: (context)=>Profilescreen()));
             }),

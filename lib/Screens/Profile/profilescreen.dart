@@ -1,6 +1,7 @@
 import 'package:blood_bank_application/Colors/colors.dart';
 import 'package:blood_bank_application/Screens/Images/images.dart';
 import 'package:blood_bank_application/Screens/LoginScreen/loginscreen.dart';
+import 'package:blood_bank_application/Screens/NotificationScreen/emptynotification.dart';
 import 'package:blood_bank_application/Screens/Profile/API/userprovider.dart';
 import 'package:blood_bank_application/Screens/Profile/editprofilescreen.dart';
 import 'package:blood_bank_application/Screens/Profile/widgets/profilecard.dart';
@@ -149,7 +150,7 @@ super.initState();
               ),
               SizedBox(height: size.height*0.02),
               ProfileSubcard(icon: Icons.notifications_outlined, title: 'Notifications',onTap: (){
-              
+                Navigator.push(context,MaterialPageRoute(builder: (context)=>const Emptynotification()));
               },),
                SizedBox(height: size.height*0.02),
                     ProfileSubcard(icon: Icons.person_add_outlined, title: 'Edit Profile',onTap: (){

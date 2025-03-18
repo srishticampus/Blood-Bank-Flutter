@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:blood_bank_application/API/BloodRequestAPI/bloodrequestmodel.dart';
+import 'package:blood_bank_application/Colors/colors.dart';
+import 'package:blood_bank_application/DashBoard/dashboardscreen.dart';
 import 'package:flutter/material.dart';
 
 import 'package:http/http.dart' as https;
@@ -91,4 +93,76 @@ class Bloodrequestprovider with ChangeNotifier {
       notifyListeners();
     }
   }
+Future<void> donationInterest({
+  required String donorId,
+  required String requestId,
+  required BuildContext context,
+}) async {
+  final Uri url = Uri.parse(
+    'http://campus.sicsglobal.co.in/Project/Blood_Bank/phpfiles/api/donation_interest.php?donor_id=$donorId&request_id=$requestId',
+  );
+
+  print("Request URL: $url"); // Debugging purpose
+
+  try {
+    final response = await https.post(url);
+    print("Response: ${response.body}"); // Debugging response
+
+    if (response.statusCode == 200) {
+      final jsonData = json.decode(response.body); // Decode JSON
+
+      if (jsonData['success'] == true) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            backgroundColor: Colors.green,
+            content: Text(
+              'Request successful!',
+              style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+            ),
+          ),
+        );
+
+        // Navigate after a short delay to allow user to see message
+        Future.delayed(const Duration(seconds: 1), () {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => Dashboardscreen()),
+          );
+        });
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            backgroundColor: appColor,
+            content: Text(
+              'You already have an ongoing donation. Please complete it before showing interest again.',
+              style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+            ),
+          ),
+        );
+      }
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          backgroundColor: appColor,
+          content: Text(
+            'Failed to process request. Try again later.',
+            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+          ),
+        ),
+      );
+      print('Failed. Status Code: ${response.statusCode}');
+    }
+  } catch (e) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        backgroundColor: Colors.red,
+        content: Text(
+          'Error occurred! Please check your internet connection.',
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+        ),
+      ),
+    );
+    print('Exception: $e');
+  }
+}
 }

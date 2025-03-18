@@ -1,29 +1,30 @@
 import 'package:blood_bank_application/API/BloodRequestAPI/bloodrequestprovider.dart';
+import 'package:blood_bank_application/API/EmergencyalertAPI/emergencyapi/Emergencyrequestprovider.dart';
 import 'package:blood_bank_application/Colors/colors.dart';
 import 'package:blood_bank_application/Screens/Profile/API/userprovider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class BloodDonationdetailsscreen extends StatefulWidget {
-   static const routeName = 'blood_donation_details';
+class Emergencyalertdetails extends StatefulWidget {
+   static const routeName = 'emergency_alert_details';
   final String id;
-  const BloodDonationdetailsscreen({super.key,required this.id});
+  const Emergencyalertdetails({super.key,required this.id});
 
   @override
-  State<BloodDonationdetailsscreen> createState() => _BloodDonationdetailsscreenState();
+  State<Emergencyalertdetails> createState() => _EmergencyalertdetailsState();
 }
 
-class _BloodDonationdetailsscreenState extends State<BloodDonationdetailsscreen> {
+class _EmergencyalertdetailsState extends State<Emergencyalertdetails> {
   
 
   @override
   Widget build(BuildContext context) {
      final size = MediaQuery.of(context).size;
-     final bloodrequest=Provider.of<Bloodrequestprovider>(context);
+     final donationinterst=Provider.of<Bloodrequestprovider>(context);
       final user=Provider.of<UserProvider>(context);
     
-      final bloodData =
-        Provider.of<Bloodrequestprovider>(context).bloodrequest.firstWhere((element) => element.id == widget.id);
+      final emergencyData =
+        Provider.of<Emergencyrequestprovider>(context).emergency.firstWhere((element) => element.id == widget.id);
       
       
 
@@ -32,7 +33,7 @@ class _BloodDonationdetailsscreenState extends State<BloodDonationdetailsscreen>
        appBar: AppBar(
         iconTheme: IconThemeData(color: Colors.white),
         backgroundColor: appColor,
-        title: Text('Blood Request Details',style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold,fontSize: 16),),
+        title: Text('Emergency Alert Details',style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold,fontSize: 16),),
        ),
         body:SingleChildScrollView(
           child: Column(
@@ -46,7 +47,7 @@ class _BloodDonationdetailsscreenState extends State<BloodDonationdetailsscreen>
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Blood Request Details',style: TextStyle(color: appColor,fontWeight: FontWeight.bold),),
+                    Text('Emergency Alert Details',style: TextStyle(color: appColor,fontWeight: FontWeight.bold),),
                     SizedBox(height: size.height*0.01,),
                     Card(
                       color:Colors.grey[300],
@@ -63,7 +64,7 @@ class _BloodDonationdetailsscreenState extends State<BloodDonationdetailsscreen>
                                    child: Text('Patient Name  :',style: TextStyle(fontWeight: FontWeight.w600),)),
                                  Expanded(
                                    flex: 2,
-                                   child: Text(bloodData.patientName,style:const TextStyle(fontWeight: FontWeight.w600),))
+                                   child: Text(emergencyData.patientName,style:const TextStyle(fontWeight: FontWeight.w600),))
                                ],
                              ),
                              SizedBox(height: size.height*0.02,),
@@ -75,7 +76,7 @@ class _BloodDonationdetailsscreenState extends State<BloodDonationdetailsscreen>
                                    child: Text('Mr no  :',style: TextStyle(fontWeight: FontWeight.w600),)),
                                  Expanded(
                                    flex: 2,
-                                   child: Text(bloodData.mrNo,style:const TextStyle(fontWeight: FontWeight.w600),))
+                                   child: Text(emergencyData.mrNo,style:const TextStyle(fontWeight: FontWeight.w600),))
                                ],
                              ),
                                SizedBox(height: size.height*0.02,),
@@ -87,7 +88,7 @@ class _BloodDonationdetailsscreenState extends State<BloodDonationdetailsscreen>
                                    child: Text('By Stander Name  :',style: TextStyle(fontWeight: FontWeight.w600),)),
                                  Expanded(
                                    flex: 2,
-                                   child: Text(bloodData.bystanderName,style:const TextStyle(fontWeight: FontWeight.w600),))
+                                   child: Text(emergencyData.bystanderName,style:const TextStyle(fontWeight: FontWeight.w600),))
                                ],
                              ),
                               SizedBox(height: size.height*0.02,),
@@ -99,7 +100,7 @@ class _BloodDonationdetailsscreenState extends State<BloodDonationdetailsscreen>
                                    child: Text('By Stander Conatct No  :',style: TextStyle(fontWeight: FontWeight.w600),)),
                                  Expanded(
                                    flex: 2,
-                                   child: Text(bloodData.bystanderContactNo,style:const TextStyle(fontWeight: FontWeight.w600),))
+                                   child: Text(emergencyData.bystanderContactNo,style:const TextStyle(fontWeight: FontWeight.w600),))
                                ],
                              ),
                            
@@ -123,7 +124,7 @@ class _BloodDonationdetailsscreenState extends State<BloodDonationdetailsscreen>
                                                         child: Text('Blood Type :',style: TextStyle(color:Colors.white,fontWeight: FontWeight.w600),)),
                                                       Expanded(
                                                         flex: 2,
-                                                        child: Text(bloodData.bloodType,style:TextStyle(color:Colors.white,fontWeight: FontWeight.w600),))
+                                                        child: Text(emergencyData.bloodType,style:TextStyle(color:Colors.white,fontWeight: FontWeight.w600),))
                                                     ],
                                                   ),
                                                     SizedBox(height: size.height*0.02,),
@@ -135,7 +136,7 @@ class _BloodDonationdetailsscreenState extends State<BloodDonationdetailsscreen>
                                                         child: Text('Blood Units Required :',style: TextStyle(color:Colors.white,fontWeight: FontWeight.w600),)),
                                                       Expanded(
                                                         flex: 2,
-                                                        child: Text(bloodData.bloodUnitsRequired,style: TextStyle(color: Colors.white,fontWeight: FontWeight.w600),))
+                                                        child: Text(emergencyData.bloodUnitsRequired,style: TextStyle(color: Colors.white,fontWeight: FontWeight.w600),))
                                                     ],
                                                   ),
                                                ],
@@ -154,7 +155,7 @@ class _BloodDonationdetailsscreenState extends State<BloodDonationdetailsscreen>
                                child: Text('Diagnosis  :',style: TextStyle(fontWeight: FontWeight.w600),)),
                              Expanded(
                                flex: 2,
-                               child: Text(bloodData.diagnosis,style:const TextStyle(fontWeight: FontWeight.w600),))
+                               child: Text(emergencyData.diagnosis,style:const TextStyle(fontWeight: FontWeight.w600),))
                            ],
                                             ),
                     SizedBox(height: size.height*0.02,),
@@ -166,7 +167,7 @@ class _BloodDonationdetailsscreenState extends State<BloodDonationdetailsscreen>
                            child: Text('Doctor Assigned  :',style: TextStyle(fontWeight: FontWeight.w600),)),
                          Expanded(
                            flex: 2,
-                           child: Text(bloodData.doctorAssigned,style:const TextStyle(fontWeight: FontWeight.w600),))
+                           child: Text(emergencyData.doctorAssigned,style:const TextStyle(fontWeight: FontWeight.w600),))
                        ],
                                             ),
                     SizedBox(height: size.height*0.02,),
@@ -179,7 +180,7 @@ class _BloodDonationdetailsscreenState extends State<BloodDonationdetailsscreen>
                            child: Text('Priority   :',style: TextStyle(fontWeight: FontWeight.w600),)),
                          Expanded(
                            flex: 2,
-                           child: Text(bloodData.priority,style:const TextStyle(fontWeight: FontWeight.w600),))
+                           child: Text(emergencyData.priority,style:const TextStyle(fontWeight: FontWeight.w600),))
                        ],
                                             ),
                     SizedBox(height: size.height*0.02,),
@@ -191,7 +192,7 @@ class _BloodDonationdetailsscreenState extends State<BloodDonationdetailsscreen>
                            child: Text('Requested Date  :',style: TextStyle(fontWeight: FontWeight.w600),)),
                          Expanded(
                            flex: 2,
-                           child: Text(bloodData.requestedDate,style:const TextStyle(fontWeight: FontWeight.w600),))
+                           child: Text(emergencyData.requestedDate,style:const TextStyle(fontWeight: FontWeight.w600),))
                        ],
                                             ),
                                               SizedBox(height: size.height*0.04,),
@@ -199,10 +200,10 @@ class _BloodDonationdetailsscreenState extends State<BloodDonationdetailsscreen>
                                               child: ElevatedButton(
                                                 style: ElevatedButton.styleFrom(backgroundColor: appColor),
                                                 onPressed: ()async{
-                                                await bloodrequest.donationInterest(donorId: user.currentUserId.toString(), requestId: bloodData.id.toString(), context: context);
-                                                print(user.currentUserId.toString());
-                                                print(bloodData.id.toString());
 
+                                               await donationinterst.donationInterest(donorId: user.currentUserId.toString(), requestId: emergencyData.id.toString(), context: context);
+                                               print(user.currentUserId.toString());
+                                               print(emergencyData.id.toString());
                                                 }, child: Text('Accept',style: TextStyle(color: Colors.white,fontWeight:FontWeight.bold ),)),
                                             )
                                     

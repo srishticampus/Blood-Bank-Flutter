@@ -39,13 +39,15 @@ class _DonarCardState extends State<DonarCard> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 ListTile(
-                  leading: CircleAvatar(
-                    radius: 25,
-                    backgroundColor: appColor,
-                    backgroundImage: AssetImage(
-                      donarImage,
-                    ),
-                  ),
+                  leading: Consumer<UserProvider>(builder: (context, value, child) {
+                  String userphoto= "";
+                  for (var i = 0; i < value.users.length; i++) {
+                    userphoto = value.users[i].avatar;
+                   
+                  }
+                  return CircleAvatar(radius: 25,backgroundImage: NetworkImage(userphoto),);
+                  
+                }),
                   title:   Consumer<UserProvider>(builder: (context, value, child) {
                   String username= "";
                   for (var i = 0; i < value.users.length; i++) {

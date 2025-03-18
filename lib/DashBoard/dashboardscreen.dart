@@ -7,6 +7,7 @@ import 'package:blood_bank_application/DashBoard/widgets/oraganizationcard.dart'
 import 'package:blood_bank_application/Drawer/drawer.dart';
 import 'package:blood_bank_application/Screens/Blood_donation_request/blood_donation_request.dart';
 import 'package:blood_bank_application/Screens/DonationHistory/donationhistoryscreen.dart';
+import 'package:blood_bank_application/Screens/NotificationScreen/emptynotification.dart';
 import 'package:blood_bank_application/Screens/Profile/profilescreen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -140,10 +141,10 @@ class _DashboardscreenState extends State<Dashboardscreen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                    
-                     Dashboradcard(title: 'Profile management', image: 'assets/usericon.png', onTap: (){
-                         Navigator.push(context,MaterialPageRoute(builder: (context)=>const Profilescreen()));
-                     }),
+                       Dashboradcard(title: 'Notifications', image: 'assets/notificationicon.png', onTap: (){
+                         Navigator.push(context,MaterialPageRoute(builder: (context)=>const Emptynotification()));
+                       }),
+                   
                        Dashboradcard(title: 'Blood Donation Request', image: 'assets/bloodicon.png', onTap: (){
                         Navigator.push(context,MaterialPageRoute(builder: (context)=>const BloodDonationRequestPage()));
                        }),
@@ -154,7 +155,10 @@ class _DashboardscreenState extends State<Dashboardscreen> {
                      Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                       Dashboradcard(title: 'Appointment Request', image: 'assets/appoin.png', onTap: (){}),
+                          Dashboradcard(title: 'Profile management', image: 'assets/usericon.png', onTap: (){
+                         Navigator.push(context,MaterialPageRoute(builder: (context)=>const Profilescreen()));
+                     }),
+                    
                           Dashboradcard(title: 'Donation History', image: 'assets/donation.png', onTap: (){
                        Navigator.push(context,MaterialPageRoute(builder: (context)=>const Donationhistoryscreen()));
                      })
