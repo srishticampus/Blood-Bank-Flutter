@@ -61,13 +61,16 @@ class _RegisterscreenState extends State<Registerscreen> {
       foregroundColor: Colors.white,
     );
   }
-  Future<void> _selectDate(BuildContext context) async {
+Future<void> _selectDate(BuildContext context) async {
+  final DateTime now = DateTime.now();
+  final DateTime minDate = DateTime(now.year - 60, now.month, now.day + 1); // 60 years ago
+  final DateTime maxDate = DateTime(now.year - 18, now.month, now.day - 1); // 18 years ago (excluding today)
+
   final DateTime? picked = await showDatePicker(
-    
     context: context,
-    initialDate: DateTime.now(),
-    firstDate: DateTime(1900), // Allowing valid past dates
-    lastDate: DateTime.now(), // Restricting future dates
+    initialDate: maxDate, // Default to 18 years ago
+    firstDate: minDate, // Minimum age: 60 years old
+    lastDate: maxDate, // Maximum age: 18 years old (yesterday)
     builder: (BuildContext context, Widget? child) {
       return Theme(
         data: ThemeData.light().copyWith(
@@ -84,12 +87,19 @@ class _RegisterscreenState extends State<Registerscreen> {
   );
 
   if (picked != null) {
-    if (picked.isAfter(DateTime.now())) {
-      // Show error if future date is selected
+    int age = now.year - picked.year;
+
+    // Adjust age calculation if birthday hasn't occurred yet this year
+    if (picked.month > now.month || (picked.month == now.month && picked.day > now.day)) {
+      age--;
+    }
+
+    if (age < 18 || age > 60) {
+      // Show error if the selected age is outside the range
       MyCustomAlertDialog().showCustomAlertdialog(
         context: context,
         title: 'Note',
-        subtitle: "Invalid date! Date of Birth cannot be in the future.",
+        subtitle: "Age must be between 18 and 60 years.",
         onTapOkButt: () {
           Navigator.of(context).pop();
         },
@@ -101,6 +111,47 @@ class _RegisterscreenState extends State<Registerscreen> {
     }
   }
 }
+
+//   Future<void> _selectDate(BuildContext context) async {
+//   final DateTime? picked = await showDatePicker(
+    
+//     context: context,
+//     initialDate: DateTime.now(),
+//     firstDate: DateTime(1900), // Allowing valid past dates
+//     lastDate: DateTime.now(), // Restricting future dates
+//     builder: (BuildContext context, Widget? child) {
+//       return Theme(
+//         data: ThemeData.light().copyWith(
+//           colorScheme: ColorScheme.light(
+//             primary: Colors.white,
+//             onPrimary: appColor,
+//             surface: appColor,
+//             onSurface: Colors.white,
+//           ),
+//         ),
+//         child: child!,
+//       );
+//     },
+//   );
+
+//   if (picked != null) {
+//     if (picked.isAfter(DateTime.now())) {
+//       // Show error if future date is selected
+//       MyCustomAlertDialog().showCustomAlertdialog(
+//         context: context,
+//         title: 'Note',
+//         subtitle: "Invalid date! Date of Birth cannot be in the future.",
+//         onTapOkButt: () {
+//           Navigator.of(context).pop();
+//         },
+//       );
+//     } else {
+//       // Format and set the valid date
+//       String formattedDate = "${picked.day}-${picked.month}-${picked.year}";
+//       dateController.text = formattedDate;
+//     }
+//   }
+// }
 
   // Future<void> _selectDate(BuildContext context) async {
   //   final DateTime? picked = await showDatePicker(
@@ -312,15 +363,29 @@ class _RegisterscreenState extends State<Registerscreen> {
           onTapOkButt: () {
             Navigator.of(context).pop();
           });
-    } else if (weightcontroller.text.trim().isEmpty||double.tryParse(weightcontroller.text.trim()) == null || double.parse(weightcontroller.text.trim()) < 50) {
-      MyCustomAlertDialog().showCustomAlertdialog(
-          context: context,
-          title: 'Note',
-          subtitle: "Weight must be a number and at least 50",
-          onTapOkButt: () {
-            Navigator.of(context).pop();
-          });
     } 
+    else if (weightcontroller.text.trim().isEmpty || 
+         double.tryParse(weightcontroller.text.trim()) == null || 
+         double.parse(weightcontroller.text.trim()) < 50 || 
+         double.parse(weightcontroller.text.trim()) > 100) {
+  MyCustomAlertDialog().showCustomAlertdialog(
+      context: context,
+      title: 'Note',
+      subtitle: "Weight must be a number between 50 and 100",
+      onTapOkButt: () {
+        Navigator.of(context).pop();
+      });
+}
+
+    // else if (weightcontroller.text.trim().isEmpty||double.tryParse(weightcontroller.text.trim()) == null || double.parse(weightcontroller.text.trim()) < 50) {
+    //   MyCustomAlertDialog().showCustomAlertdialog(
+    //       context: context,
+    //       title: 'Note',
+    //       subtitle: "Weight must be a number and at least 50",
+    //       onTapOkButt: () {
+    //         Navigator.of(context).pop();
+    //       });
+    // } 
    
     
     

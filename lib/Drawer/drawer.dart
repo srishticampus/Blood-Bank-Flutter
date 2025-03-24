@@ -1,7 +1,10 @@
 import 'package:blood_bank_application/Colors/colors.dart';
+import 'package:blood_bank_application/Screens/AboutScreen/aboutscreen.dart';
+import 'package:blood_bank_application/Screens/Blood_donation_request/blood_donation_request.dart';
 import 'package:blood_bank_application/Screens/Images/drawericon.dart';
 import 'package:blood_bank_application/Screens/Images/images.dart';
 import 'package:blood_bank_application/Screens/LoginScreen/loginscreen.dart';
+import 'package:blood_bank_application/Screens/NotificationScreen/emptynotification.dart';
 import 'package:blood_bank_application/Screens/Profile/API/userprovider.dart';
 import 'package:blood_bank_application/Screens/Profile/profilescreen.dart';
 import 'package:blood_bank_application/Screens/contactscreen.dart';
@@ -65,13 +68,19 @@ class _DrawerMenuState extends State<DrawerMenu> {
             menuList(dprofileicon, 'Profile',(){
               Navigator.push(context,MaterialPageRoute(builder: (context)=>Profilescreen()));
             }),
-            menuList(bloodreqicon, 'Blood Requirement',(){}),
+            menuList(bloodreqicon, 'Blood Requirement',(){
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>const BloodDonationRequestPage()));
+            }),
             menuList(bloodreqicon, 'Completed Requirement',(){}),
-            menuList(aboutusicon, 'About us',(){}),
+            menuList(aboutusicon, 'About us',(){
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>const Aboutscreen()));
+            }),
             menuList(contactusicon, 'Contact us',(){
               Navigator.push(context, MaterialPageRoute(builder: (context)=>const Contactscreen()));
             }),
-            menuList(notificationicon, 'Notifications',(){}),
+            menuList(notificationicon, 'Notifications',(){
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>const Emptynotification()));
+            }),
             menuList(blogouticon, 'Logout',(){
                  showDialog(
               context: context,

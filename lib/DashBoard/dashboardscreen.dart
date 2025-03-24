@@ -9,6 +9,7 @@ import 'package:blood_bank_application/Screens/Blood_donation_request/blood_dona
 import 'package:blood_bank_application/Screens/DonationHistory/donationhistoryscreen.dart';
 import 'package:blood_bank_application/Screens/NotificationScreen/emptynotification.dart';
 import 'package:blood_bank_application/Screens/Profile/profilescreen.dart';
+import 'package:blood_bank_application/notificationpage.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -142,7 +143,7 @@ class _DashboardscreenState extends State<Dashboardscreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                        Dashboradcard(title: 'Notifications', image: 'assets/notificationicon.png', onTap: (){
-                         Navigator.push(context,MaterialPageRoute(builder: (context)=>const Emptynotification()));
+                     //    Navigator.push(context,MaterialPageRoute(builder: (context)=>const Notificationpage()));
                        }),
                    
                        Dashboradcard(title: 'Blood Donation Request', image: 'assets/bloodicon.png', onTap: (){

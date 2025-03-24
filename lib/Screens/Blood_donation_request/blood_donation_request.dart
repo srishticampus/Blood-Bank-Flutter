@@ -58,10 +58,18 @@ class _BloodDonationRequestPageState extends State<BloodDonationRequestPage> {
                           )
                         : bloodrequest.bloodrequest.isEmpty
                             ? Center(
-                                child: Text(
-                                'No Blood Requests...',
-                                style: TextStyle(color:appColor),
-                              ))
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Image.asset('assets/br.png',scale: 1.8,),
+                                    Text(
+                                    'No Blood Requests...!',
+                                    style: TextStyle(color:appColor),
+
+                                                                  ),
+                                                                  
+                                  ],
+                                ))
                             : SizedBox(
                                 height: size.height * 0.05,
                                 child: ListView.builder(
