@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:blood_bank_application/Colors/colors.dart';
 import 'package:blood_bank_application/DashBoard/dashboardscreen.dart';
+import 'package:blood_bank_application/Screens/Profile/API/usermodel.dart';
 import 'package:blood_bank_application/Screens/Profile/API/userprovider.dart';
 import 'package:blood_bank_application/Screens/Profile/profilescreen.dart';
 import 'package:blood_bank_application/Screens/Profile/widgets/profiletextform.dart';
@@ -12,7 +13,8 @@ import 'package:provider/provider.dart';
 import 'package:http/http.dart'as http;
 
 class Editprofilescreen extends StatefulWidget {
-  const Editprofilescreen({super.key});
+   final String id;
+  const Editprofilescreen({super.key, required this.id});
 
   @override
   State<Editprofilescreen> createState() => _EditprofilescreenState();
@@ -29,6 +31,8 @@ class _EditprofilescreenState extends State<Editprofilescreen> {
   final _formKey = GlobalKey<FormState>();
    File? _image;
   final ImagePicker _picker = ImagePicker();
+  bool isLoading = true; // To track if data is being fetched
+
 
   /// Function to Pick Image from Gallery or Camera
   Future<void> _pickImage(ImageSource source) async {
@@ -72,31 +76,42 @@ class _EditprofilescreenState extends State<Editprofilescreen> {
 //   _loadUserData();
 // }
 
-void _loadUserData() {
-  final user = Provider.of<UserProvider>(context, listen: false);
+  @override
+  void initState() {
+    super.initState();
+    fetchUserData();
+  }
 
-  setState(() {
-    // fullnamecontroller.text = user.currentUserId ?? "Vishal";
-    // datecontroller.text = user.currentUserId ?? "12-2-2000";
-    // gendercontroller.text = user.currentUserId?? "Male";
-    // mobilenumberrcontroller.text = user.currentUserId ?? "8870120688";
-    // emailcontroller.text = user.currentUserId ?? "vishal@gmail.com";
-    // citycontroller.text = user.currentUserId ?? "Kerala";
-    // pincodecontroller.text = user.currentUserId?? "629161";
-    //    fullnamecontroller.text =  "Vishal";
-    // datecontroller.text =  "12-2-2000";
-    // gendercontroller.text ="Male";
-    // mobilenumberrcontroller.text =  "8870120688";
-    // emailcontroller.text =  "vishal@gmail.com";
-    // citycontroller.text = "Kerala";
-    // pincodecontroller.text =  "629161";
+  // Fetch user data properly
+  Future<void> fetchUserData() async {
+    final userProvider = Provider.of<UserProvider>(context, listen: false);
+    
+    await userProvider.getUserData(context: context); // Ensure data is fetched before using it
 
-    if (user.currentUserId != null && user.currentUserId!.isNotEmpty) {
-      _image = File(user.currentUserId!); // Load existing profile image
+    final user = userProvider.users.firstWhere(
+      (element) => element.id == widget.id,
+      orElse: () => UserModel(id: '',fullName: '',dateOfBirth: '',gender: '',contactNumber: '',email: '',city: '',zipCode: '',avatar: '',bloodGroup: '',healthStatus: '',role: '',weight: ''), // Handle missing data gracefully
+    );
+
+    if (user.id.isNotEmpty) {
+      setState(() {
+        fullnamecontroller.text = user.fullName;
+        mobilenumberrcontroller.text = user.contactNumber;
+        emailcontroller.text = user.email;
+        datecontroller.text=user.dateOfBirth;
+        gendercontroller.text=user.gender;
+        citycontroller.text=user.city;
+        pincodecontroller.text=user.zipCode;
+        
+
+
+      //  addressController.text = user.address; // Make sure `address` is available
+        isLoading = false;
+      });
+    } else {
+      setState(() => isLoading = false);
     }
-  });
-}
-
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(

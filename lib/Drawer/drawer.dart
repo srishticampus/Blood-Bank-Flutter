@@ -157,25 +157,23 @@ class _DrawerMenuState extends State<DrawerMenu> {
 
   Widget menuList(String image, String title,Function() onTap) {
     return ListTile(
-      leading: InkWell(
-        onTap: onTap,
-        child: Container(
-            height: 40,
-            width: 40,
-            decoration: BoxDecoration(),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Center(
-                    child: Image.asset(
-                  image,
-                  height: 30,
-                  width: 30,
-                  color: Colors.black,
-                )),
-              ],
-            )),
-      ),
+      onTap: onTap,
+      leading: Container(
+          height: 40,
+          width: 40,
+          decoration: BoxDecoration(),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Center(
+                  child: Image.asset(
+                image,
+                height: 30,
+                width: 30,
+                color: Colors.black,
+              )),
+            ],
+          )),
       title: Text(
         title,
         style: const TextStyle(color: Colors.black, fontSize: 13),

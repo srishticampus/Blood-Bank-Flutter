@@ -35,17 +35,17 @@ class Bloodrequestprovider with ChangeNotifier {
     return [..._bloodrequest];
   }
 
-  Future getAllBloodRequestData({required BuildContext context}) async {
+  Future getAllBloodRequestData({required BuildContext context,required String userid}) async {
     try {
       _isLoading = true;
       // var headers = {'Cookie': 'ci_session=c7lis868nec6nl8r1lb5el72q8n26upv'};
       var response = await https.get(
         Uri.parse(
-            "http://campus.sicsglobal.co.in/Project/Blood_Bank/phpfiles/api/view_blood_request.php"),
+            "http://campus.sicsglobal.co.in/Project/Blood_Bank/phpfiles/api/view_blood_request.php?donor_id=$userid"),
       );
 
       print(
-          "http://campus.sicsglobal.co.in/Project/Blood_Bank/phpfiles/api/view_blood_request.php");
+        "http://campus.sicsglobal.co.in/Project/Blood_Bank/phpfiles/api/view_blood_request.php?donor_id=$userid");
 
       print(response.body);
 

@@ -203,7 +203,7 @@ class _BloodDonationdetailsscreenState extends State<BloodDonationdetailsscreen>
                                                 print(user.currentUserId.toString());
                                                 print(bloodData.id.toString());
 
-                                                }, child: Text('Accept',style: TextStyle(color: Colors.white,fontWeight:FontWeight.bold ),)),
+                                                }, child: Text('Interst',style: TextStyle(color: Colors.white,fontWeight:FontWeight.bold ),)),
                                             )
                                     
                   

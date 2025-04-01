@@ -25,6 +25,7 @@ super.initState();
   @override
   Widget build(BuildContext context) {
     Size size=MediaQuery.of(context).size;
+    final user=Provider.of<UserProvider>(context);
     return Scaffold( appBar: AppBar(
         iconTheme: IconThemeData(color: Colors.white),
         backgroundColor: appColor,
@@ -154,7 +155,7 @@ super.initState();
               },),
                SizedBox(height: size.height*0.02),
                     ProfileSubcard(icon: Icons.person_add_outlined, title: 'Edit Profile',onTap: (){
-                        Navigator.push(context,MaterialPageRoute(builder: (context)=>const Editprofilescreen()));
+                        Navigator.push(context,MaterialPageRoute(builder: (context)=> Editprofilescreen(id:user.currentUserId.toString())));
                     },),  
                SizedBox(height: size.height*0.02),
                    ProfileSubcard(icon: Icons.logout_outlined, title: 'Logout',onTap: (){

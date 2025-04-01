@@ -1,4 +1,6 @@
 import 'package:blood_bank_application/API/EmergencyalertAPI/emergencyapi/Emergencyrequestprovider.dart';
+import 'package:blood_bank_application/API/OrganizationAPI/organizationprovider.dart';
+import 'package:blood_bank_application/API/OrganizationAPI/widget/organizationwidget.dart';
 import 'package:blood_bank_application/Colors/colors.dart';
 import 'package:blood_bank_application/DashBoard/widgets/dashboradcard.dart';
 import 'package:blood_bank_application/DashBoard/widgets/donarcard.dart';
@@ -8,6 +10,7 @@ import 'package:blood_bank_application/Drawer/drawer.dart';
 import 'package:blood_bank_application/Screens/Blood_donation_request/blood_donation_request.dart';
 import 'package:blood_bank_application/Screens/DonationHistory/donationhistoryscreen.dart';
 import 'package:blood_bank_application/Screens/NotificationScreen/emptynotification.dart';
+import 'package:blood_bank_application/Screens/Profile/API/userprovider.dart';
 import 'package:blood_bank_application/Screens/Profile/profilescreen.dart';
 import 'package:blood_bank_application/notificationpage.dart';
 import 'package:flutter/material.dart';
@@ -23,12 +26,15 @@ class Dashboardscreen extends StatefulWidget {
 class _DashboardscreenState extends State<Dashboardscreen> {
   @override
   void initState(){
+    final user=Provider.of<UserProvider>(context,listen: false);
     Provider.of<Emergencyrequestprovider>(context,listen: false).getAllEmergencyRequestData(context: context);
+    Provider.of<Organizationprovider>(context,listen: false).getAllOrganizationData(context: context, userid:user.currentUserId.toString());
     super.initState();
   }
   @override
   Widget build(BuildContext context) {
     final emergencyalert=Provider.of<Emergencyrequestprovider>(context);
+    final organization=Provider.of<Organizationprovider>(context);
     final size=MediaQuery.of(context).size;
     return SafeArea(
       child: Scaffold(
@@ -106,44 +112,130 @@ class _DashboardscreenState extends State<Dashboardscreen> {
                               ),
                  ),
 
-              SizedBox(height: size.height*0.01),
+              SizedBox(height: size.height*0.02),
                 DonarCard(),
-                SizedBox(height: size.height*0.01),
-                 Card(
-                  elevation: 5,
-                 // color:Colors.white70,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      children: [
-                        Text(
-                          'Organization details',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        Divider(thickness: 1),
-                        Emergencycard(
-                            icon: Icons.location_city_outlined,
-                            value:
-                                'Organization Name : Blood Bank Limited'),
-                        Emergencycard(
-                            icon: Icons.person_pin_outlined,
-                            value: 'Count of Members : 50'),
-                        Emergencycard(
-                            icon: Icons.my_location_outlined,
-                            value: 'Location : Trivandrum,India'),
-                      ],
-                    ),
+                      SizedBox(height: size.height*0.02),
+                // SizedBox(height: size.height*0.01),
+                //  SizedBox(
+                //   height: size.height*0.29,
+                //    child:organization.loadingSpinner
+                //         ? Column(
+                //             mainAxisAlignment: MainAxisAlignment.center,
+                //             children: [
+                //               Center(child: const Text("Loading")),
+                //               CircularProgressIndicator(
+                //                 color:appColor,
+                //               ),
+                //               const SizedBox(
+                //                 width: 10,
+                //               ),
+                           
+                //             ],
+                //           )
+                //         : organization.organization.isEmpty
+                //             ? Center(
+                //                 child: Column(
+                //                   children: [
+                //                     SizedBox(height: size.height*0.06,),
+                //                     Image.asset('assets/org.png',height: 50,width: 50),
+                //                      SizedBox(height: size.height*0.01,),
+                //                     Text(
+                //                     'No Organizations...!',
+                //                     style: TextStyle(color:appColor,fontWeight: FontWeight.bold),
+                //                                                   ),
+                //                   ],
+                //                 ))
+                //             : SizedBox(
+                //                 height: size.height * 0.05,
+                //                 child: ListView.builder(
+                //                   scrollDirection: Axis.horizontal,
+                //                   itemCount: organization.organization.length,
+                //                   itemBuilder: (context, intex) {
+                //                     return Organizationwidget(
+                //                       id: organization.organization[intex].organizationId,
+                //                        name:  organization.organization[intex].name,
+                //                         regno: organization.organization[intex].regNo,
+                //                         contact_no: organization.organization[intex].contactNo,
+                //                          email: organization.organization[intex].email,
+                //                           city: organization.organization[intex].city);
+                //                   },
+                //                 ),
+                //               ),
+                //  ),
+                SizedBox(
+  height: size.height * 0.30,
+  child: organization.loadingSpinner
+      ? Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Center(child: Text("Loading")),
+            CircularProgressIndicator(color: appColor),
+            const SizedBox(width: 10),
+          ],
+        )
+      : organization.organization.isEmpty
+          ? Center(
+              child: Column(
+                children: [
+                  SizedBox(height: size.height * 0.06),
+                  Image.asset('assets/org.png', height: 50, width: 50),
+                  SizedBox(height: size.height * 0.01),
+                  Text(
+                    'No Organizations...!',
+                    style: TextStyle(color: appColor, fontWeight: FontWeight.bold),
                   ),
-                ),
+                ],
+              ),
+            )
+          : Column(  // Directly show the first organization without ListView
+              children: organization.organization.take(3).map((org) {
+                return Organizationwidget(
+                  id: org.organizationId,
+                  name: org.name,
+                  regno: org.regNo,
+                  contact_no: org.contactNo,
+                  email: org.email,
+                  city: org.city,
+                );
+              }).toList(),
+            ),
+),
+
+                //  Card(
+                //   elevation: 5,
+                //  // color:Colors.white70,
+                //   child: Padding(
+                //     padding: const EdgeInsets.all(8.0),
+                //     child: Column(
+                //       children: [
+                //         Text(
+                //           'Organization details',
+                //           style: TextStyle(
+                //             fontSize: 16,
+                //             fontWeight: FontWeight.bold,
+                //           ),
+                //         ),
+                //         Divider(thickness: 1),
+                //         Emergencycard(
+                //             icon: Icons.location_city_outlined,
+                //             value:
+                //                 'Organization Name : Blood Bank Limited'),
+                //         Emergencycard(
+                //             icon: Icons.person_pin_outlined,
+                //             value: 'Count of Members : 50'),
+                //         Emergencycard(
+                //             icon: Icons.my_location_outlined,
+                //             value: 'Location : Trivandrum,India'),
+                //       ],
+                //     ),
+                //   ),
+                // ),
                   SizedBox(height: 10),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                        Dashboradcard(title: 'Notifications', image: 'assets/notificationicon.png', onTap: (){
-                     //    Navigator.push(context,MaterialPageRoute(builder: (context)=>const Notificationpage()));
+                      Navigator.push(context,MaterialPageRoute(builder: (context)=>const Emptynotification()));
                        }),
                    
                        Dashboradcard(title: 'Blood Donation Request', image: 'assets/bloodicon.png', onTap: (){

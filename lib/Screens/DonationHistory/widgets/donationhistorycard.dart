@@ -37,14 +37,25 @@ class _DonationhistorycardState extends State<Donationhistorycard> {
             subtitle: Text('Upadte Time : ${widget.updatedtime}',style: TextStyle(fontSize: 12),),
             trailing: Card(
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
-              color: appColor,
+              color: getStatusColor(widget.status),
               child: Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Text(widget.status,style: TextStyle(color: Colors.white),),
+              child: Text(widget.status,style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
             )),
           )
         ],
       ),
     );
   }
+   Color getStatusColor(String status) {
+    switch (status.toLowerCase()) {
+      case 'ongoing':
+        return Colors.red;
+      case 'fulfilled':
+        return Colors.green;
+      default:
+        return Colors.blueGrey; 
+    }
+  }
 }
+

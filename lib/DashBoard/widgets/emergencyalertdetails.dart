@@ -204,7 +204,7 @@ class _EmergencyalertdetailsState extends State<Emergencyalertdetails> {
                                                await donationinterst.donationInterest(donorId: user.currentUserId.toString(), requestId: emergencyData.id.toString(), context: context);
                                                print(user.currentUserId.toString());
                                                print(emergencyData.id.toString());
-                                                }, child: Text('Accept',style: TextStyle(color: Colors.white,fontWeight:FontWeight.bold ),)),
+                                                }, child: Text('Interst',style: TextStyle(color: Colors.white,fontWeight:FontWeight.bold ),)),
                                             )
                                     
                   

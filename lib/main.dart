@@ -12,10 +12,6 @@ import 'package:provider/provider.dart';
 void main()async {
    WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  // WidgetsFlutterBinding.ensureInitialized();
-
-
-  // NotiService().initNotification();
   await FirebaseApi().initNotification();
   runApp(const MyApp());
 }

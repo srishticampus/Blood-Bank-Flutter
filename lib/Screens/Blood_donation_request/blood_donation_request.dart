@@ -2,6 +2,7 @@ import 'package:blood_bank_application/API/BloodRequestAPI/bloodrequestprovider.
 import 'package:blood_bank_application/Colors/colors.dart';
 import 'package:blood_bank_application/DashBoard/widgets/oraganizationcard.dart';
 import 'package:blood_bank_application/Screens/Blood_donation_request/widgets/blood_donation_rquest_card.dart';
+import 'package:blood_bank_application/Screens/Profile/API/userprovider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -16,7 +17,8 @@ class BloodDonationRequestPage extends StatefulWidget {
 class _BloodDonationRequestPageState extends State<BloodDonationRequestPage> {
   @override 
   void initState(){
-    Provider.of<Bloodrequestprovider>(context,listen: false).getAllBloodRequestData(context: context);
+    final user=Provider.of<UserProvider>(context,listen: false);
+    Provider.of<Bloodrequestprovider>(context,listen: false).getAllBloodRequestData(context: context,userid: user.currentUserId.toString());
     super.initState();
   }
   @override

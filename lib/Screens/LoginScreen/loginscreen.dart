@@ -13,6 +13,7 @@ import 'package:blood_bank_application/Screens/RegisterScreen/registerscreen.dar
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart'as https;
+import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:toastification/toastification.dart';
 
@@ -30,35 +31,69 @@ class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
   bool isloading =false;
   bool _passwordVisible = false;
-    void showToast(BuildContext context, String title, String description,
-      ToastificationType type) {
-    toastification.show(
+ void _showSuccessDialog(BuildContext context) {
+    showDialog(
       context: context,
-      type: type,
-      title: Text(title,style: TextStyle(fontWeight: FontWeight.bold),),
-      description: Text(description),
-      primaryColor: Colors.white,
-      autoCloseDuration: const Duration(seconds: 3),
-      progressBarTheme: ProgressIndicatorThemeData(
-        color: type == ToastificationType.success
-            ? Colors.white
-            : type == ToastificationType.info
-                ? Colors.white
-                : type == ToastificationType.warning
-                    ? Colors.orange
-                    : Colors.grey,
-      ),
-      showProgressBar: true,
-      backgroundColor: type == ToastificationType.success
-          ? Colors.grey
-          : type == ToastificationType.info
-              ? Colors.red
-              : type == ToastificationType.warning
-                  ? Colors.orange
-                  : Colors.grey,
-      foregroundColor: Colors.white,
+      builder: (context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Lottie.asset(
+                'assets/lottie/login.json',
+                width: 150,
+                height: 150,
+                repeat: false, // Play once
+              ),
+              SizedBox(height: 10),
+              Text(
+                'Login Successful!',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+              SizedBox(height: 10),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.of(context).pop(); // Close the dialog
+                },
+                child: Text('OK'),
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
+
+  //   void showToast(BuildContext context, String title, String description,
+  //     ToastificationType type) {
+  //   toastification.show(
+  //     context: context,
+  //     type: type,
+  //     title: Text(title,style: TextStyle(fontWeight: FontWeight.bold),),
+  //     description: Text(description),
+  //     primaryColor: Colors.white,
+  //     autoCloseDuration: const Duration(seconds: 3),
+  //     progressBarTheme: ProgressIndicatorThemeData(
+  //       color: type == ToastificationType.success
+  //           ? Colors.white
+  //           : type == ToastificationType.info
+  //               ? Colors.white
+  //               : type == ToastificationType.warning
+  //                   ? Colors.orange
+  //                   : Colors.grey,
+  //     ),
+  //     showProgressBar: true,
+  //     backgroundColor: type == ToastificationType.success
+  //         ? Colors.grey
+  //         : type == ToastificationType.info
+  //             ? Colors.red
+  //             : type == ToastificationType.warning
+  //                 ? Colors.orange
+  //                 : Colors.grey,
+  //     foregroundColor: Colors.white,
+  //   );
+  // }
 
 
   Future<void>loginBloodbank(String email, String password) async {
@@ -97,8 +132,9 @@ class _LoginScreenState extends State<LoginScreen> {
           //     duration: const Duration(seconds: 4),
           //   ),
           // );
-           showToast(context, 'Login', 'Login Sucessful',
-                  ToastificationType.success);
+          //  showToast(context, 'Login', 'Login Sucessful',
+          //         ToastificationType.success);
+          _showSuccessDialog(context);
 
           Navigator.push(
               context,
@@ -109,8 +145,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
           print('Login successful');
         } else if (jsonData['success'] == false) {
-              showToast(context, 'Login Failed', 'Please try again later',
-                  ToastificationType.error);
+              // showToast(context, 'Login Failed', 'Please try again later',
+              //     ToastificationType.error);
           // ScaffoldMessenger.of(context).showSnackBar(
           //   SnackBar(
           //     backgroundColor:appColor,
